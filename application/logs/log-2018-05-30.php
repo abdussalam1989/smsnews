@@ -1,0 +1,15 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+
+ERROR - 2018-05-30 07:17:22 --> Severity: Warning --> touch(): Unable to create file ci_session/clickschooldiary9ccbd1468299c94f780401a0b87b82bfd8854c16 because No such file or directory /home/clickschooldiary/public_html/smsnew1/system/libraries/Session/drivers/Session_files_driver.php 238
+ERROR - 2018-05-30 07:17:22 --> Severity: Warning --> Unknown: Failed to write session data (user). Please verify that the current setting of session.save_path is correct (ci_session) Unknown 0
+ERROR - 2018-05-30 07:17:27 --> 404 Page Not Found: Admin_assets/Icon
+ERROR - 2018-05-30 07:17:36 --> Severity: Warning --> touch(): Unable to create file ci_session/clickschooldiary9ccbd1468299c94f780401a0b87b82bfd8854c16 because No such file or directory /home/clickschooldiary/public_html/smsnew1/system/libraries/Session/drivers/Session_files_driver.php 238
+ERROR - 2018-05-30 07:17:36 --> Severity: Warning --> Unknown: Failed to write session data (user). Please verify that the current setting of session.save_path is correct (ci_session) Unknown 0
+ERROR - 2018-05-30 07:17:42 --> Severity: Warning --> touch(): Unable to create file ci_session/clickschooldiary9ccbd1468299c94f780401a0b87b82bfd8854c16 because No such file or directory /home/clickschooldiary/public_html/smsnew1/system/libraries/Session/drivers/Session_files_driver.php 238
+ERROR - 2018-05-30 07:17:42 --> Severity: Warning --> Unknown: Failed to write session data (user). Please verify that the current setting of session.save_path is correct (ci_session) Unknown 0
+ERROR - 2018-05-30 07:17:59 --> Severity: Warning --> touch(): Unable to create file ci_session/clickschooldiary9ccbd1468299c94f780401a0b87b82bfd8854c16 because No such file or directory /home/clickschooldiary/public_html/smsnew1/system/libraries/Session/drivers/Session_files_driver.php 238
+ERROR - 2018-05-30 07:17:59 --> Severity: Warning --> Unknown: Failed to write session data (user). Please verify that the current setting of session.save_path is correct (ci_session) Unknown 0
+ERROR - 2018-05-30 17:27:55 --> Severity: Warning --> touch(): Unable to create file ci_session/clickschooldiary9ccbd1468299c94f780401a0b87b82bfd8854c16 because No such file or directory /home/clickschooldiary/public_html/smsnew1/system/libraries/Session/drivers/Session_files_driver.php 238
+ERROR - 2018-05-30 17:27:55 --> Severity: Warning --> Unknown: Failed to write session data (user). Please verify that the current setting of session.save_path is correct (ci_session) Unknown 0
+ERROR - 2018-05-30 19:59:47 --> Severity: Warning --> touch(): Unable to create file ci_session/clickschooldiary9ccbd1468299c94f780401a0b87b82bfd8854c16 because No such file or directory /home/clickschooldiary/public_html/smsnew1/system/libraries/Session/drivers/Session_files_driver.php 238
+ERROR - 2018-05-30 19:59:47 --> Severity: Warning --> Unknown: Failed to write session data (user). Please verify that the current setting of session.save_path is correct (ci_session) Unknown 0

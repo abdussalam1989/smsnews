@@ -1,0 +1,30 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+
+ERROR - 2017-10-07 22:40:14 --> 404 Page Not Found: Admin_assets/Icon
+ERROR - 2017-10-07 22:40:48 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-10-07 22:40:53 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-10-07 22:41:56 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-10-07 22:44:52 --> 404 Page Not Found: admin/Sms/sms.php
+ERROR - 2017-10-07 23:04:10 --> 404 Page Not Found: admin/Sendsmsallstud/index
+ERROR - 2017-10-07 23:04:15 --> 404 Page Not Found: admin/Sendsmsallstud/index
+ERROR - 2017-10-07 23:05:01 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-10-07 23:05:08 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-10-07 23:12:40 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-10-07 23:12:49 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-10-07 23:19:20 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-10-07 23:20:36 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-10-07 23:21:34 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-10-07 23:22:10 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-10-07 23:23:30 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-10-07 23:23:51 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-10-07 23:28:13 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-10-07 23:28:18 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-10-07 23:28:56 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-10-07 23:29:19 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-10-07 23:29:26 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-10-07 23:31:05 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-10-07 23:33:09 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-10-07 23:33:13 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-10-07 23:33:51 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-10-07 23:34:51 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-10-07 23:35:46 --> 404 Page Not Found: Admin_assets/plugins

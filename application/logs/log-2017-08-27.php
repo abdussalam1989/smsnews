@@ -1,0 +1,39 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+
+ERROR - 2017-08-27 07:20:14 --> 404 Page Not Found: Admin_assets/Icon
+ERROR - 2017-08-27 08:18:31 --> 404 Page Not Found: Admin_assets/Icon
+ERROR - 2017-08-27 08:19:32 --> 404 Page Not Found: Admin_assets/Icon
+ERROR - 2017-08-27 08:19:41 --> 404 Page Not Found: Admin_assets/Icon
+ERROR - 2017-08-27 08:19:42 --> 404 Page Not Found: Admin_assets/Icon
+ERROR - 2017-08-27 08:21:53 --> 404 Page Not Found: Admin_assets/Icon
+ERROR - 2017-08-27 08:21:59 --> 404 Page Not Found: Admin_assets/Icon
+ERROR - 2017-08-27 08:22:03 --> 404 Page Not Found: Admin_assets/Icon
+ERROR - 2017-08-27 08:22:34 --> 404 Page Not Found: Admin_assets/Icon
+ERROR - 2017-08-27 08:23:00 --> 404 Page Not Found: Admin_assets/Icon
+ERROR - 2017-08-27 08:24:50 --> 404 Page Not Found: Admin_assets/Icon
+ERROR - 2017-08-27 08:24:54 --> 404 Page Not Found: Admin_assets/Icon
+ERROR - 2017-08-27 08:25:14 --> 404 Page Not Found: Admin_assets/Icon
+ERROR - 2017-08-27 10:55:30 --> 404 Page Not Found: Admin_assets/Icon
+ERROR - 2017-08-27 10:56:41 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-08-27 10:56:53 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-08-27 11:03:37 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-08-27 19:46:09 --> 404 Page Not Found: Admin_assets/Icon
+ERROR - 2017-08-27 19:50:09 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-08-27 19:50:55 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-08-27 19:52:17 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-08-27 19:55:08 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-08-27 19:55:54 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-08-27 19:57:09 --> 404 Page Not Found: Admin_assets/Icon
+ERROR - 2017-08-27 19:57:57 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-08-27 19:59:16 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-08-27 19:59:45 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-08-27 20:04:03 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-08-27 20:08:53 --> Session: File 'ci_session/ci_sessionf0e30e726a69738798fa46194c669fe03123269b' doesn't exist and cannot be created.
+ERROR - 2017-08-27 20:09:08 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-08-27 20:09:42 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-08-27 20:09:56 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-08-27 20:48:49 --> 404 Page Not Found: Admin_assets/Icon
+ERROR - 2017-08-27 21:27:32 --> 404 Page Not Found: admin/Registerhtml/index
+ERROR - 2017-08-27 21:27:35 --> 404 Page Not Found: admin/Registerhtml/index
+ERROR - 2017-08-27 22:02:44 --> 404 Page Not Found: Admin_assets/Icon
+ERROR - 2017-08-27 22:03:06 --> 404 Page Not Found: Admin_assets/plugins

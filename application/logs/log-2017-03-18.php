@@ -1,0 +1,80 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+
+ERROR - 2017-03-18 02:43:30 --> 404 Page Not Found: Admin_assets/Icon
+ERROR - 2017-03-18 02:44:00 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 02:44:06 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 02:45:41 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 02:45:54 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 02:46:51 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 02:46:57 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 02:48:41 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 02:48:48 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 02:49:44 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 02:49:54 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 02:51:09 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 02:51:15 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 02:51:45 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 02:53:08 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 02:53:14 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 02:54:39 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 02:54:49 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 02:55:05 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 02:55:24 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 02:56:50 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 02:56:56 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 02:58:15 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 02:58:21 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 02:58:54 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 02:58:58 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 02:59:56 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 03:00:00 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 03:02:17 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 03:02:31 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 03:02:51 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 03:04:40 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 03:04:48 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 03:06:32 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 03:06:42 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 03:08:36 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 03:08:50 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 03:10:54 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 04:52:47 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 04:54:24 --> 404 Page Not Found: Admin_assets/Icon
+ERROR - 2017-03-18 05:10:27 --> 404 Page Not Found: Admin_assets/Icon
+ERROR - 2017-03-18 05:11:40 --> Query error: Lost connection to MySQL server during query - Invalid query: SELECT *
+FROM `users`
+WHERE `email` = 'principal.bhuli@denobili.in'
+AND `logint_type` = 'user'
+AND `password` = '7aea309636e087459bd3e5a0ba87e0c7'
+ERROR - 2017-03-18 05:14:33 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 05:14:48 --> 404 Page Not Found: Upload/user_image
+ERROR - 2017-03-18 05:14:49 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 05:14:50 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 05:22:24 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 05:22:53 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 05:22:58 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 05:24:28 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 05:24:36 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 05:25:37 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 05:25:43 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 05:26:47 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 07:30:28 --> 404 Page Not Found: Admin_assets/Icon
+ERROR - 2017-03-18 07:54:38 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 07:54:56 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 07:55:02 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 07:59:36 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 07:59:44 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 08:01:23 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 08:37:23 --> 404 Page Not Found: Admin_assets/Icon
+ERROR - 2017-03-18 08:38:00 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 08:40:22 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 08:41:05 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 08:41:18 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 08:42:51 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 10:43:59 --> 404 Page Not Found: admin/Registerhtml/index
+ERROR - 2017-03-18 12:29:09 --> 404 Page Not Found: Admin_assets/Icon
+ERROR - 2017-03-18 12:29:17 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 12:30:15 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 12:30:17 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 12:30:43 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-03-18 19:45:33 --> 404 Page Not Found: Admin_assets/Icon

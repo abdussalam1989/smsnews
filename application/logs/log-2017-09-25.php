@@ -1,0 +1,64 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+
+ERROR - 2017-09-25 09:45:32 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 09:45:35 --> 404 Page Not Found: Admin_assets/Icon
+ERROR - 2017-09-25 09:45:56 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 09:46:11 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 09:46:18 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 09:49:57 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 09:50:08 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 09:50:27 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 09:50:49 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 09:50:59 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 09:51:28 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 09:51:35 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 09:51:44 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 09:52:11 --> 404 Page Not Found: Upload/banner
+ERROR - 2017-09-25 09:53:01 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 09:53:06 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 09:53:43 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 09:54:01 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 09:54:15 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 09:56:15 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 09:56:16 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 09:56:30 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 09:56:44 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 09:56:47 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 09:58:53 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 09:59:10 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 09:59:29 --> Severity: Notice --> Undefined index: employ_id G:\xampp_old\htdocs\2017\pro\sms\application\views\admin\group_form.php 103
+ERROR - 2017-09-25 09:59:33 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 09:59:37 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 09:59:42 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 09:59:46 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 09:59:51 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 09:59:53 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 10:02:08 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 10:02:15 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 10:02:24 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 10:48:32 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 14:49:00 --> 404 Page Not Found: Admin_assets/Icon
+ERROR - 2017-09-25 14:49:05 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 14:55:34 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 14:57:52 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 14:57:59 --> Severity: Notice --> Undefined variable: api_data G:\xampp_old\htdocs\2017\pro\sms\application\views\admin\smsalot_list.php 39
+ERROR - 2017-09-25 14:57:59 --> Severity: Warning --> Invalid argument supplied for foreach() G:\xampp_old\htdocs\2017\pro\sms\application\views\admin\smsalot_list.php 39
+ERROR - 2017-09-25 14:57:59 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 14:58:22 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 14:59:58 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 15:00:05 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 15:00:17 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 15:03:24 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 15:03:29 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 15:03:38 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 15:04:08 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 15:04:17 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 15:05:28 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 15:06:09 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 15:22:26 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 15:22:37 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 15:22:43 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 15:22:54 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 15:24:41 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 15:24:44 --> 404 Page Not Found: Admin_assets/plugins
+ERROR - 2017-09-25 15:25:49 --> 404 Page Not Found: Admin_assets/plugins
