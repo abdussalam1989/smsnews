@@ -42,15 +42,22 @@
                                                 <input type="radio" name="sms_type" id="Instant" value="Instant" checked="checked">
                                                 <label for="sms_type"> Instant Message</label>
                                             </div>
-                                            <div class="col-md-6">   
+                                            <?php
+                                            if ($get_api_status['status_two'] == 'Active') { ?>
+                                            <div class="col-md-6" id="schedule_message_on">   
                                                 <input type="radio" name="sms_type" id="schedule_message" value="Schedule" autocomplete="off" >
                                                 <label for="schedule_message"> Schedule Message on</label>
-                                            </div>
+                                            </div>                                            
+                                        <?php } else { }?>
+                                        
                                         </div>
                                     </div>
+                                    <?php
+                                    if ($get_api_status['status_two'] == 'Active') { ?>
                                     <div class="form-group" id="schedule_message_datetimepicker" style="display:none">
-                                        <input type="text" class="form-control" name="schedule_date" id="datetimepicker1" >                                         
-                                    </div>                                   
+                                        <input type="text" class="form-control" name="schedule_date" id="datetimepicker1">                                         
+                                    </div>
+                                    <?php } else {} ?>                                   
 
 
                                     <div class="form-group"> 
@@ -201,4 +208,5 @@ $(function () {
         }
     }
 });
+
 </script>

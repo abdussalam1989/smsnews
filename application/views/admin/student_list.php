@@ -39,7 +39,7 @@
                             <form action="<?php echo base_url().$this->config->item('admin_folder')?>/student" method="POST">
                                 <div class="pull-right">
                                 <select name="get_class" class="form-control pull-right" id="get_class" onchange='this.form.submit()' >
-                                    <option value="" <?php if(isset($data['id'])){ ?> disabled='' <?php } ?> > Select </option>
+                                    <option value="" <?php if(isset($data['id'])){ ?> disabled='' <?php } ?> > All </option>
                                     <?php foreach($class_name as $c_list): ?>
                                         <option value="<?php echo $c_list['id']; ?>" <?php if(isset($csv_data)){if($c_list['id'] == $csv_data){ ?> selected <?php } } ?>  ><?php echo $c_list['name']; ?></option>
                                     <?php endforeach; ?> 
@@ -47,7 +47,7 @@
                                     <noscript><input type="submit" value="Submit"></noscript>
                                 </div>
                                 <div class="pull-right">
-                                    <label>Class name :</label>
+                                    <label>Class name : </label>&nbsp;&nbsp;
                                 </div>
                             </form>
                         </div><!-- /.box-header -->

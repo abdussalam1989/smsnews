@@ -107,24 +107,23 @@ class Sendtostud extends CI_Controller {
                 }
             }
 
-            if ($save['sms_type'] == 'Schedule') {
+            if($save['sms_type'] == 'Schedule') {
                 $save['schedule_date'] = $this->input->post('schedule_date', TRUE);
                 $save['sms_type'] = 'Schedule';
             } else {
                 $save['sms_type'] = 'Instant';
             }
-
             $mobile_number = $save['mobile_no'];
-
             $mb_no = explode(",", $mobile_number);
-            //    $save['masterlog_id'] = $master_id;
+            //$save['masterlog_id'] = $master_id;
             $date = get_current_date_time();
             $save['addtime'] = date("H:i:s", strtotime($date));
             $save['adddate'] = date("Y-m-d", strtotime($date));
 			$message = $s_message;
-		//	$store_data = array();
+		    //$store_data = array();
 		    $i_key = 0;
-		    $j_error = 0;		   
+		    $j_error = 0;
+            $active_one=0;		   
             foreach ($mb_no as $key => $numbers) {
                 //if (preg_match('/^\d{10}$/', $numbers)) { // phone number is valid   
 				$save['mobile_no'] = $numbers;
@@ -163,6 +162,17 @@ class Sendtostud extends CI_Controller {
 
                         if ($get_user_list['status_one'] == 'Active') {
                             $save['api_name'] = 'one';
+                            $username =$username;
+                            $password = $api_password;
+                            $numbers = $numbers;
+                            $sender = $sender;
+                            $data_one = array('user'=>$username, 'pass'=>$password, 'phone'=>$numbers, "sender"=>$sender, 'text'=>$save['message'],'priority'=>$api_priority,'stype'=>$api_type);
+                            $send_report=send_sms_one($data_one,$save);                          
+                            $active_one++;
+                            $save['response_id']=$send_report;                       
+                            $save['msg_status']='Pending';
+                            $save['is_send']=0;
+                            $store_data[$key]= $save; 
                         }
                         if ($get_user_list['status_two'] == 'Active') {
                            
@@ -214,10 +224,14 @@ class Sendtostud extends CI_Controller {
                 //}
             }			
 			if($store_data) {
+                if ($get_user_list['status_one'] == 'Active') {
+                $this->db->insert_batch(SMS_LOG_ONE, $store_data);
+            } else {
                 $this->db->insert_batch(SMS_LOG, $store_data);
             }
+            }
 
-            if ($j_error == 0) {
+            if ($j_error == 0 || $active_one > 0) {
                 $this->session->set_flashdata('success', 'Message send succesfully');
                 redirect($this->config->item('admin_folder') . '/send/stud');
             } else {

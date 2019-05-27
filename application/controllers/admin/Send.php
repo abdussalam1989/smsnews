@@ -1204,6 +1204,7 @@ class Send extends CI_Controller {
 			//$store_data = array();
 			$message = $s_message;
 			$i_key = 0;
+            $active_one=0;
 			 $save['message'] = $message;
 			$j_error = 0;
             foreach ($mb_no as $key => $numbers) {
@@ -1240,8 +1241,18 @@ class Send extends CI_Controller {
                     $save['stud_id'] = $student_info['id'];
                     if ($save['sms_type'] != 'Schedule') {
 
-                        if ($get_user_list['status_one'] == 'Active') {
+                        if($get_user_list['status_one'] == 'Active') {
                             $save['api_name'] = 'one';
+                            $username =$username;
+                                    $password = $api_password;
+                                    $numbers = $numbers;
+                                    $sender = $sender;
+                                    $data = array('user'=>$username, 'pass'=>$password, 'phone'=>$numbers, "sender"=>$sender, 'text'=>$save['message'],'priority'=>$api_priority,'stype'=>$api_type);
+                                    $send_report=send_sms_one($data,$save);                          
+                                    $active_one++;
+                                    $save['response_id']=$send_report;                       
+                                    $save['msg_status']='Pending';
+                                    $save['is_send']=0;
                         }
                         if ($get_user_list['status_two'] == 'Active') {                            
                             $save['api_name'] = 'two';                            
@@ -1289,10 +1300,14 @@ class Send extends CI_Controller {
             }
             //$j_error++;
 			if ($store_data) {
-					$this->db->insert_batch(SMS_LOG, $store_data);
+                    if($get_user_list['status_one'] == 'Active') {
+					$this->db->insert_batch(SMS_LOG_ONE, $store_data);
+                } else {
+                    $this->db->insert_batch(SMS_LOG, $store_data);
+                }
 				}
 				
-            if ($j_error == 0) {
+            if ($j_error == 0 || $active_one > 0) {
                 $this->session->set_flashdata('success', 'Message send succesfully');
                 redirect($this->config->item('admin_folder') . '/send/homework');
             } else {
@@ -1373,7 +1388,7 @@ class Send extends CI_Controller {
         $data['get_group_list'] = get_list_by_user_id($user_id, CLASSES);
         $data['get_list'] = get_sms_list($user_id, 'class_sms');
         $data['total_msg'] = count($data['get_list']);
-        if (isset($_POST['submit'])) {
+        if(isset($_POST['submit'])) {
             //$save['mobile_no']=$this->input->post('mobile_no',TRUE);
             $s_message = $this->input->post('message', TRUE);
             $save['sms_type'] = $this->input->post('sms_type', TRUE);
@@ -1381,12 +1396,10 @@ class Send extends CI_Controller {
             $save['user_id'] = $user_id;
             $save['send_sms_type'] = 'class_sms';
             $check_group = $this->input->post('check_id', TRUE);
-
             //print_r($check_group); exit;
             $path_link = '';
 
-            $get_user_list = get_list_by_id($user_id, USERS);
-
+            $get_user_list = get_list_by_id($user_id, USERS);          
             if ($save['sms_type'] == 'Schedule') {
                 $save['schedule_date'] = $this->input->post('schedule_date', TRUE);
                 $save['sms_type'] = 'Schedule';
@@ -1399,15 +1412,13 @@ class Send extends CI_Controller {
             $total_val = ceil($total_msg);
             $save['count_msg'] = $total_val;
             $master_id = insert_record(SMS_LOG_MASTER, $save);
-
             $date = get_current_date_time();
             $save['addtime'] = date("H:i:s", strtotime($date));
             $save['adddate'] = date("Y-m-d", strtotime($date));
             foreach ($check_group as $key => $value) {
                 $stdnt_list = $this->Data_model->get_student_list_by_class_id($value, $user_id);
-
-                foreach ($stdnt_list as $gm) {
-                    if ($save['msg_for'] != 'None') {
+                foreach($stdnt_list as $gm) {
+                    if($save['msg_for'] != 'None') {
                         $msg = $s_message;
                         $message = $msg;
                     } else {
@@ -1428,9 +1439,8 @@ class Send extends CI_Controller {
                         $arr['[rollno]'] = $gm['roll_no'];
                     }
                     $message_test = replace_string_using_array($arr, $message);
-                    if ($message_test == FALSE) {
+                    if($message_test == FALSE) {
                         $save['message'] = $message;
-
                         $message = urlencode($message);
                     } else {
                         $save['message'] = $message_test;

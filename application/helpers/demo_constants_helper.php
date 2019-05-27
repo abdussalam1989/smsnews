@@ -19,7 +19,6 @@ define('API1_SCHEDULE_LINK','http://148.251.126.231/api/schedulemsg.php?');
 define('API1_INSTANT_LINK','http://148.251.126.231/api/sendmsg.php?');
 define('API1_GETSTATUS_LINK','http://148.251.126.231/api/recdlr.php?');
 
-
 //:http://148.251.126.231/api/sendmsg.php?
 
 //SEND SMS links for api 2
@@ -49,6 +48,7 @@ define('STUDENT','student');
 define('SMS_TEMPLATE','sms_template');
 define('HOMEWORK','homework');
 define('SMS_LOG','sms_log');
+define('SMS_LOG_ONE','sms_log_one');
 define('SMS_API','sms_api');
 define('ATTENDANCE_SHEET', 'attendance_sheet');
 define('SMS_LOG_MASTER','sms_log_master');

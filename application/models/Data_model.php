@@ -259,7 +259,7 @@ class Data_model extends CI_Model {
         
         function get_api_status($user_id)
         {   
-            $this->db->select('status_two,language_option');
+            $this->db->select('status_one,status_two,language_option');
             $this->db->where('id',$user_id);
             $query=$this->db->get(USERS);
             return $query->row_array();            
@@ -413,7 +413,9 @@ class Data_model extends CI_Model {
         {
 			$this->db->select('id,class_name,name,father_name,mobile_no,alternate_no,roll_no,user_id,status');
 			$this->db->where('user_id',$user_id);
-			$this->db->where('class_id',$class_id);
+            if($class_id!=""){
+            $this->db->where('class_id',$class_id);
+            }			
 			$this->db->order_by('roll_no',"ASC");
 			$qr=$this->db->get(STUDENT);
 			return $qr->result_array();
@@ -474,6 +476,16 @@ class Data_model extends CI_Model {
             $query=$this->db->get(SMS_LOG);
             $result=$query->result_array();
             return $result;
+        }
+
+        function sms_detail_sent_status($userid) {
+        $this->db->select('*');
+        $this->db->where('sms_log_one.user_id',$userid);
+        $this->db->where('sms_log_one.msg_status','Pending');
+        $this->db->where('sms_log_one.is_send',0);
+        $query=$this->db->get(SMS_LOG_ONE);
+        $result= $query->result_array();
+        return $result; 
         }
         
 }

@@ -36,9 +36,26 @@ class Sms extends CI_Controller {
     function report() {
         //echo "Aftab Siddiqui";die;
         $data['page_title'] = 'SMS Report';
-       
-        
-
+        $admin = $this->session->userdata();
+        $user_id = $admin['user_id'];
+        $get_user_list=get_list_by_id($user_id, USERS);
+        if($get_user_list['status_one']=='Active'){
+        $resultstatus=$this->Data_model->sms_detail_sent_status($user_id);
+       foreach($resultstatus as $key=>$smsdata){
+       if($smsdata['response_id']!="") {
+       $data = array('user'=>$get_user_list['username_one'], 'phone'=>$smsdata['mobile_no'], "msgid"=>$smsdata['response_id'],'msgtype'=>$get_user_list['prioritydetails_one']);
+        $response=send_sms_response($data);
+        if($response=='Sent'){           
+            $store_data['msg_status'] = 'Delivered';
+            $store_data['is_send'] = 1;
+        } else {
+            $store_data['msg_status'] = 'failure';
+            $store_data['is_send'] = 0;
+        } 
+        update_record($store_data,$smsdata['id'],SMS_LOG_ONE);        
+        }   
+        }
+    }
         $this->load->view($this->config->item('admin_folder') . '/smsreport_list', $data);
     }
 
@@ -47,10 +64,15 @@ class Sms extends CI_Controller {
         $user_id = $admin['user_id'];
 
         // DB table to use
+        $get_user_list=get_list_by_id($user_id, USERS);
+        if($get_user_list['status_one']=='Active') {
+        $table = SMS_LOG_ONE;
+        } else {
         $table = SMS_LOG;
-
+        }        
         // Table's primary key
         $primaryKey = 'id';
+        
 
         // Array of database columns which should be read and sent back to DataTables.
         // The `db` parameter represents the column name in the database, while the `dt`
@@ -92,11 +114,10 @@ class Sms extends CI_Controller {
         );
 
 
-        /*         * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+        /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
          * If you just want to use the basic configuration for DataTables with PHP
          * server-side, there is no need to edit below this line.
          */
-
         //require('ssp.class.php');
         $this->load->library('Ssp.php');
 
@@ -147,12 +168,20 @@ class Sms extends CI_Controller {
 
             $where .= ' and (sl.adddate >="' . $first_date . '" and sl.adddate <= "' . $second_date . '") ';
         }
-
+        if($get_user_list['status_one']=='Active') {
+        $joinQuery = "FROM sms_log_one AS sl "
+                . " LEFT OUTER JOIN student AS st ON st.id=sl.stud_id "
+                . " LEFT OUTER JOIN class_teacher AS ct ON ct.id=sl.teacher_id"
+                . " LEFT OUTER JOIN staff AS sf ON sf.id=sl.staff_id";
+        $extraWhere = "sl.user_id='" . $user_id . "' " . $where . " ORDER BY sl.id DESC";
+        } else {
         $joinQuery = "FROM sms_log AS sl "
                 . " LEFT OUTER JOIN student AS st ON st.id=sl.stud_id "
                 . " LEFT OUTER JOIN class_teacher AS ct ON ct.id=sl.teacher_id"
                 . " LEFT OUTER JOIN staff AS sf ON sf.id=sl.staff_id";
         $extraWhere = "sl.user_id='" . $user_id . "' " . $where . " ORDER BY sl.id DESC";
+        }
+        
 
         //$groupBy="sl.id DESC";
         //$joinQuery = "FROM sms_log AS sl JOIN student AS st ON sl.mobile_no=st.mobile_no where sl.user_id='".$user_id."' ";

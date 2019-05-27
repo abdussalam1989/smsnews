@@ -78,16 +78,21 @@
                                             <input type="radio" name="sms_type" id="sms_type" value="Instant" checked="checked" >
                                             <label for="sms_type"> Instant Message</label>
                                         </div>
-                                        <div class="col-md-6">   
+                                        <?php
+                                        if ($get_api_status['status_two'] == 'Active') { ?>
+                                        <div class="col-md-6" id="schedule_message_on">   
                                             <input type="radio" name="sms_type" id="schedule_message" value="Schedule">
                                             <label for="schedule_message"> Schedule Message on</label>
                                         </div>
+                                    <?php } else {} ?>
                                     </div>
                                 </div>
+                                <?php
+                                if($get_api_status['status_two'] == 'Active') { ?>
                                 <div class="form-group" id="schedule_message_datetimepicker" style="display:none">
                                     <input type="text" class="form-control" name="schedule_date" id="datetimepicker1"  value="">  
                                 </div>
-
+                                <?php } else { } ?>
                                 <div class="form-group"> 
                                     <div class="row">
                                         <label for="message_for" class="col-md-4"> Message For :</label>

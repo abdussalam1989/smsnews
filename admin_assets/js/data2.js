@@ -10,8 +10,8 @@ $(document).ready(function() {
         "fnDrawCallback": function (oSettings) {
                $('[name="boot_btn"]').bootstrapSwitch();
          },
-        "autoWidth": false,
-        "iDisplayLength": 100,
+         "autoWidth": false,
+         "iDisplayLength": 100,
     });
     
    /* var table = $('#example1').DataTable({

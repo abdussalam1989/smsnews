@@ -34,13 +34,10 @@ class Sendsmsclass extends CI_Controller {
                         $save['msg_for']=$this->input->post('msg_for',TRUE);
                         $save['user_id']=$user_id;
                         $save['send_sms_type']='class_sms';
-                        $check_group=$this->input->post('check_id',TRUE);
-                       
-                        $path_link='';
-                     
-                        $get_user_list=get_list_by_id($user_id, USERS);
-                      				
-					  if($get_user_list['status_one']=='Active') {
+                        $check_group=$this->input->post('check_id',TRUE);                       
+                        $path_link='';                     
+                        $get_user_list=get_list_by_id($user_id, USERS);                      				
+					    if($get_user_list['status_one']=='Active') {
                             $api_username=$get_user_list['username_one'];
                             $api_password=$get_user_list['password_one'];
                             $api_sender=$get_user_list['senderid_one'];
@@ -59,19 +56,19 @@ class Sendsmsclass extends CI_Controller {
                         
                         if(isset($api_username)) {
                             if(empty($api_username)) {
-                                    $this->session->set_flashdata('error', 'API Username is not set!!' );
+                                    $this->session->set_flashdata('error', 'API Username is not set!!');
                                     redirect($this->config->item('admin_folder').'/send/class_sms');
                             }
                         }
                         
-                        if(isset($api_password)){ 
+                        if(isset($api_password)) { 
                             if(empty($api_password)) {
                                     $this->session->set_flashdata('error', 'API Password is not set !!' );
                                     redirect($this->config->item('admin_folder').'/send/class_sms');
                             }
                         }
                         
-                        if(isset($api_sender)){
+                        if(isset($api_sender)) {
                             if(empty($api_sender)) {
                                 $this->session->set_flashdata('error', 'API Sender id is not set!!' );
                                 redirect($this->config->item('admin_folder').'/send/class_sms');                            
@@ -107,7 +104,7 @@ class Sendsmsclass extends CI_Controller {
                         if($save['sms_type']=='Schedule') {   
                                 $save['schedule_date']=$this->input->post('schedule_date',TRUE);
                                 $save['sms_type']='Schedule';
-                               // $save['msg_status']='Delivered';
+                               //$save['msg_status']='Delivered';
                         } else {
                                 $save['sms_type']='Instant';
                         }                 
@@ -123,17 +120,15 @@ class Sendsmsclass extends CI_Controller {
                                // foreach($check_group as $key=>$value) {
                                         $stdnt_list=$this->Data_model->get_student_list_by_class_id($check_group,$user_id);
 										//$numbers = implode(",",array_column($stdnt_list,'mobile_no'));
-                                        
+                                        $active_one=0;
 										foreach($stdnt_list as $key=>$gm)
-                                        {
-                                            											
+                                        {  		
                                             if($save['msg_for']!='None'){    
                                             $msg=$s_message;
                                             $message=$msg;
                                             } else {
                                                 $message=$s_message;
-                                            }
-                                       
+                                            }                                       
                                             if(strrchr($message,"[todaydate]")){
                                              echo   $arr['[todaydate]']=date('d-m-Y');
                                             }
@@ -161,15 +156,29 @@ class Sendsmsclass extends CI_Controller {
                                             $save['name']=$gm['class_name'];
                                             $number=$gm['mobile_no'];
 											
-										
+										//==============================================================================//
+
                                             if($save['sms_type'] !='Schedule') {
                                                 if($get_user_list['status_one']=='Active') {
                                                       
-                                                    $save['api_name']='one';
-                                                        $upd['total_sms_one']=$get_user_list['total_sms_one']-$save['count_msg'];
+                                                $save['api_name']='one';
+                                                $upd['total_sms_one']=$get_user_list['total_sms_one']-$save['count_msg'];
+                                                            $username =$api_username;
+                                                            $password = $api_password;
+                                                            $numbers = $number;
+                                                            $sender = $api_sender;
+
+                                                            $data_one = array('user'=>$username, 'pass'=>$password, 'phone'=>$numbers, "sender"=>$sender, 'text'=>$save['message'],'priority'=>$api_priority,'stype'=>$api_type);
+                                                                $send_report=send_sms_one($data_one,$save);    
+                                                                $active_one++; 
+                                                                $save['response_id']=$send_report;
+                                                                $save['msg_status']='Pending';
+                                                                $save['is_send']=0;
+                                                                $store_data[$key]= $save;         
+                                                            
                                                 }
                                                 if($get_user_list['status_two']=='Active') {    
-                                                          $save['api_name']='two';  
+                                                            $save['api_name']='two';  
                                                             $username =$api_username;
 															$hash = $api_hash;
 															$numbers = $number;
@@ -187,16 +196,12 @@ class Sendsmsclass extends CI_Controller {
 															$json = json_decode($send_report, true);		
 													    if($json['status']=='success')
 														{
-								                                                          $store_data[$key]['msg_status']='Delivered';
-								                                                          $store_data[$key]['is_send']=1;											  
-														}
-															else 
-															{																
+								                            $store_data[$key]['msg_status']='Delivered';
+								                            $store_data[$key]['is_send']=1;											  
+														} else {											
 																$save['msg_status']='failure';
-																$save['is_send']=0;
-																
-															}
-                                                       
+																$save['is_send']=0;			
+														}                                                       
                                                       
                                                 }
                                             } else { 
@@ -243,17 +248,22 @@ class Sendsmsclass extends CI_Controller {
 																
 															}
 															
-														}
-																	 
-																		
+														}																		
 													        }
-															}
+												}
+
+                                        //==============================================================================//
+
 												$store_data[$key]=$save;
                                           
 								}
 								
 								if(isset($store_data)) {
+                                    if($get_user_list['status_one']=='Active') {                                   
+                                    $this->db->insert_batch(SMS_LOG_ONE,$store_data);
+                                } else {
 									$this->db->insert_batch(SMS_LOG,$store_data);
+                                }
 								}
                                           
                               //  }

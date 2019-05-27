@@ -100,8 +100,7 @@ function check_data_exist($field_nm, $field_data, $table) {
     $ci->db->select($field_nm);
     $ci->db->where($field_nm, $field_data);
     $query = $ci->db->get($table);
-
-    if ($query->num_rows() > 0) {
+    if($query->num_rows() > 0) {
         return true;
     } else {
         return false;
@@ -568,6 +567,32 @@ function send_sms($data, $save) {
         $add = true;
     }*/
     return $json;
+}
+
+// For API One Integration function //
+
+function send_sms_one($data, $save) {
+    
+    $ch = curl_init('http://smsw.clickschooldiary.com/api/sendmsg.php');
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $send_report = curl_exec($ch);
+    curl_close($ch);       
+    $json = json_decode($send_report, true);
+    return $send_report;
+}
+
+function send_sms_response($data) {
+    
+    $ch = curl_init('http://bhashsms.com/api/recdlr.php');
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $send_report = curl_exec($ch);
+    curl_close($ch);       
+    $json = json_decode($send_report, true);
+    return $send_report;
 }
 
 function call_send_sms_link($link) {

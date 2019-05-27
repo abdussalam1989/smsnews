@@ -37,11 +37,13 @@
                                     <div class="form-group">
                                         <input type="radio" name="sms_type" id="Instant" value="Instant" checked="checked"> Instant Message
                                     </div>
-
-                                    <div class="form-group">
+                                    <?php
+                                    if ($get_api_status['status_two'] == 'Active') { ?>
+                                    <div class="form-group" id="schedule_message_on">
                                         <input type="radio" name="sms_type" id="sms_type" value="Schedule"   > Schedule Message on :
                                         <input type="text" name="schedule_date" id="datetimepicker1" >  
-                                    </div>                            
+                                    </div>
+                                     <?php } else { } ?>                            
                                     <div class="form-group">
                                         <textarea class="form-control" style="height: 150px;" required="required" name="message" id="text_message" placeholder="Messsage"></textarea>   
                                         <input type="checkbox" name="alt_check" id="alt_check"> if send sms using alternate number <br>

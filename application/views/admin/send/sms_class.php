@@ -17,7 +17,7 @@
                 </div>
                 <ol class="breadcrumb">
                     <li><a href="<?php echo ADMIN_URL . '/dashboard'; ?>"><i class="fa fa-dashboard"></i> Home</a></li>
-                    <li><a href="<?php echo ADMIN_URL . '/send'; ?>">Send Sms </a></li>
+                    <li><a href="<?php echo ADMIN_URL . '/send'; ?>"> Send Sms </a></li>
                     <li class="active"><?php echo $page_title; ?></li>
                 </ol>
             </section>
@@ -81,17 +81,21 @@
                                             <input type="radio" name="sms_type" id="sms_type" value="Instant" checked="checked" >
                                             <label for="sms_type"> Instant Message</label>
                                         </div>
+                                        <?php
+                                        if ($get_api_status['status_two'] == 'Active') { ?>
                                         <div class="col-md-6">                                                   
                                             <input type="radio" name="sms_type" id="schedule_message" value="Schedule">
                                             <label for="schedule_message"> Schedule Message on</label>
                                         </div>
+                                    <?php } else { } ?>
                                     </div>
                                 </div>
-                                <div class="form-group" id="schedule_message_datetimepicker" style="display:none">                                        
-                                    <input type="text" class="form-control" name="schedule_date" id="datetimepicker1"  value="">  
+                                <?php
+                                if ($get_api_status['status_two'] == 'Active') { ?>
+                                <div class="form-group" id="schedule_message_datetimepicker" style="display:none">           
+                                <input type="text" class="form-control" name="schedule_date" id="datetimepicker1"  value="">  
                                 </div>
-
-
+                                <?php } else { } ?>
 
                                 <div class="form-group"> 
                                     <div class="row">

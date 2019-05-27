@@ -122,6 +122,7 @@ class Sendinstance extends CI_Controller {
 			//$store_data = array();
 			$message = $message;
 			$i_key = 0;
+            $active_one=0;
 			$j_error = 0;
             foreach ($mb_no as $key => $numbers) {
                 //if (preg_match('/^\d{10}$/', $numbers)) { // phone number is valid
@@ -131,8 +132,21 @@ class Sendinstance extends CI_Controller {
                     if ($save['sms_type'] != 'Schedule') {
                         if ($get_user_list['status_one'] == 'Active') {
                             $save['api_name'] = 'one';
+                            $username =$username;
+                            $password = $api_password;
+                            $numbers = $numbers;
+                            $sender = $sender;
+
+                            $data_one = array('user'=>$username, 'pass'=>$password, 'phone'=>$numbers, "sender"=>$sender, 'text'=>$save['message'],'priority'=>$api_priority,'stype'=>$api_type);
+                            $send_report=send_sms_one($data_one,$save);                          
+                            $active_one++;
+                            $save['response_id']=$send_report;                       
+                            $save['msg_status']='Pending';
+                            $save['is_send']=0;
+                            $store_data[$i_key]=$save;        
+                                                        
                         }
-                        if ($get_user_list['status_two'] == 'Active') {                            
+                        if($get_user_list['status_two'] == 'Active') {                            
                             $save['api_name'] = 'two';                           
                             $data = array('username' => $username, 'hash' => $hash, 'numbers' => $numbers, "sender" => $sender, "message" => $message, "unicode" => true);                            
                         }
@@ -179,10 +193,14 @@ class Sendinstance extends CI_Controller {
              }
 			
 			if($store_data) {
-                $this->db->insert_batch(SMS_LOG, $store_data);
+                if ($get_user_list['status_one'] == 'Active') {
+                  $this->db->insert_batch(SMS_LOG_ONE, $store_data);
+                } else {
+                  $this->db->insert_batch(SMS_LOG, $store_data);  
+              }                
             }
 
-            if ($j_error == 0) {
+            if ($j_error == 0 || $active_one==0) {
                $this->session->set_flashdata('success', 'Message send succesfully');
                 redirect($this->config->item('admin_folder') . '/send');
             } else {

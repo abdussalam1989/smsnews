@@ -27,12 +27,8 @@ class Student extends CI_Controller
         $field        = 'user_id';
         $data['data'] = '';
         $class_name   = $this->input->post('get_class', TRUE);
-        
-        if (!empty($class_name)) {
-            $data['csv_data'] = $class_name;
-            $data['data']     = $this->Data_model->get_student_list_by_user($user_id, $class_name);
-            
-        }
+        $data['csv_data'] = $class_name;
+        $data['data']     = $this->Data_model->get_student_list_by_user($user_id, $class_name);                   
         $data['class_name'] = get_list_by_field('user_id', $user_id, CLASSES);
         
         $data['page_title'] = 'Manage Student';

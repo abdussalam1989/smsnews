@@ -23,7 +23,6 @@ class Sendtotec extends CI_Controller {
         $admin = $this->session->userdata();
         $user_id = $admin['user_id'];
         $user = $admin['logint_type'];
-
         if (isset($_POST['submit'])) {
             $save['mobile_no'] = $this->input->post('mobile_no', TRUE);
             $s_message = trim($this->input->post('message', TRUE));
@@ -31,16 +30,11 @@ class Sendtotec extends CI_Controller {
             $save['msg_for'] = $this->input->post('msg_for', TRUE);
             $save['user_id'] = $user_id;
             $save['send_sms_type'] = 'Teacher';
-
             $path_link = '';
-
             $save['count_msg'] = sms_count($s_message);
-
             $numbers_array = extract_numbers($save['mobile_no']);
             $numbers = implode(",", $numbers_array);
             $save['mobile_no'] = $numbers;
-
-
             $get_user_list = get_list_by_id($user_id, USERS);
             if ($get_user_list['status_one'] == 'Active') {
                 $username = $get_user_list['username_one'];
@@ -118,7 +112,8 @@ class Sendtotec extends CI_Controller {
 
 		//	$store_data = array();
 			$message = $s_message;
-			$i_key = 0;			
+			$i_key = 0;
+            $active_one=0;		
 			$save['message'] = $message;
 			$j_error = 0;			
             foreach ($mb_no as $key => $numbers) {
@@ -149,6 +144,17 @@ class Sendtotec extends CI_Controller {
 
                         if ($get_user_list['status_one'] == 'Active') {
                             $save['api_name'] = 'one';
+                            $username =$username;
+                            $password = $api_password;
+                            $numbers = $numbers;
+                            $sender = $sender;
+                            $data_one = array('user'=>$username, 'pass'=>$password, 'phone'=>$numbers, "sender"=>$sender, 'text'=>$save['message'],'priority'=>$api_priority,'stype'=>$api_type);
+                            $send_report=send_sms_one($data_one,$save);                          
+                            $active_one++;
+                            $save['response_id']=$send_report;                       
+                            $save['msg_status']='Pending';
+                            $save['is_send']=0;
+                            $store_data[$key]= $save;
                         }
                         if ($get_user_list['status_two'] == 'Active') {
                           
@@ -202,10 +208,14 @@ class Sendtotec extends CI_Controller {
             }
 
 			if ($store_data) {
+                if ($get_user_list['status_one'] == 'Active') {
+                 $this->db->insert_batch(SMS_LOG_ONE, $store_data);
+                } else {
                 $this->db->insert_batch(SMS_LOG, $store_data);
             }
+            }
 			
-             if ($j_error == 0) {
+             if ($j_error == 0 || $active_one > 0) {
                 $this->session->set_flashdata('success', 'Message send succesfully');
                 redirect($this->config->item('admin_folder') . '/send/teacher');
             } else {

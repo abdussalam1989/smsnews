@@ -139,15 +139,13 @@ class Auth
 	function reset_password($email)
 	{
 		$admin = $this->get_admin_by_email($email);
-		if ($admin)
+		if($admin)
 		{
 			$this->CI->load->helper('string');
-			$this->CI->load->library('email');
-			
+			$this->CI->load->library('email');			
 			$new_password		= random_string('alnum', 8);
 			$admin['password']	= sha1($new_password);
-			$this->save_admin($admin);
-			
+			$this->save_admin($admin);			
 			$this->CI->email->from($this->CI->config->item('email'), $this->CI->config->item('site_name'));
 			$this->CI->email->to($email);
 			$this->CI->email->subject($this->CI->config->item('site_name').': Admin Password Reset');
@@ -172,7 +170,6 @@ class Auth
 		$this->CI->db->limit(1);
 		$result = $this->CI->db->get('admin');
 		$result = $result->row_array();
-
 		if (sizeof($result) > 0)
 		{
 			return $result;	
@@ -210,8 +207,7 @@ class Auth
 		$this->CI->db->order_by('firstname', 'ASC');
 		$this->CI->db->order_by('email', 'ASC');
 		$result = $this->CI->db->get('admin');
-		$result	= $result->result();
-		
+		$result	= $result->result();		
 		return $result;
 	}
 
@@ -224,7 +220,6 @@ class Auth
 		$this->CI->db->where('id', $id);
 		$result	= $this->CI->db->get('admin');
 		$result	= $result->row();
-
 		return $result;
 	}		
 	

@@ -271,13 +271,12 @@ class Smsapi extends CI_Controller {
         
         function alot_msg($id)
         {
-			$admin=$this->session->userdata();
-				
-				if($admin['user_id']!=""){
+			$admin=$this->session->userdata();				
+			if($admin['user_id']!=""){
 					$user_id=$admin['user_id'];
-				}else{
+			} else {
 					$user_id=$admin['admin_id'];
-				}
+			}
 			$overall_sms="";
 			$overall_sms=$this->User_model->get_overall_sms($id);
 		/* print_r($overall_sms);
@@ -304,20 +303,18 @@ class Smsapi extends CI_Controller {
 			//exit;
                     
                 //echo $over_sms; exit;    
-                $over_sms=$over_sms+$total_sent_sms;
-			   
-          $data['overall_sms']=$over_sms; 
-		 
+                $over_sms=$over_sms+$total_sent_sms;			   
+                $data['overall_sms']=$over_sms; 		 
                 $data['check']='edit';
                 $data['page_title']= 'Alotgg  SMS API';
                 $data['user_list']=$this->User_model->get_user_list();
                 $data['sms_type']=get_list(SMS_TYPE_LIST);
                 $data['sms_priority']=  get_list(SMS_PRIORITY_LIST);
                 //$data['api_data']=get_list(SMS_API);
-            $data['user_data']=get_list_by_id($id, USERS);
+               $data['user_data']=get_list_by_id($id, USERS);
 			//print_r( $data['user_data']);
               //exit;
-		$this->load->view($this->config->item('admin_folder').'/smsalot_list', $data);
+		       $this->load->view($this->config->item('admin_folder').'/smsalot_list', $data);
 		
 		  
         }
