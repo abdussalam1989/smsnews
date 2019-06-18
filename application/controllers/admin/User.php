@@ -18,12 +18,19 @@ class User extends CI_Controller
     {
         //$data['users']= $this->User_model->get_users();
         $admin       = $this->session->userdata();
-        $logint_type = $admin['logint_type'];
-        
+        $logint_type = $admin['logint_type'];        
         if ($logint_type == 'admin') {
             $id               = $admin['admin_info'];
             $field            = 'id';
-            $data['userlist'] = $this->User_model->get_user_list();
+            if($_POST['api_name']=='status_one') {
+            $data['api_status_one']='status_one';
+            $data['userlist'] = $this->User_model->get_user_list($_POST['api_name']);
+            } else if($_POST['api_name']=='status_two') {
+            $data['api_status_two']='status_two';
+            $data['userlist'] = $this->User_model->get_user_list($_POST['api_name']);
+            } else {
+            $data['userlist'] = $this->User_model->get_user_list($_POST['api_name']);
+            }
         } else {
             redirect($this->config->item('admin_folder') . '/dashboard');
         }

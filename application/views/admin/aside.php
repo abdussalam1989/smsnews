@@ -2,9 +2,14 @@
 <?php 
 	$admin=$this->session->userdata();
 	$id=$admin['admin_info'];
+    $login_type=$admin['logint_type'];
 	$user_id=$admin['user_id'];
 	if(!empty($user_id)){
+        if($login_type!='teacher') {
 		$edit_id=$user_id;
+        } else {
+        $edit_id=get_list_by_login_id($user_id,CLASS_TEACHER);    
+        }
 	} else {
 		$edit_id=$admin['admin_id'];
 	}
@@ -57,7 +62,7 @@
                            <!-- <li <?php if($page_title=='SMS To All Student'){ echo 'class="active"'; } ?>><a href="<?php echo base_url().$this->config->item('admin_folder').'/send/allstudents'?>">
                                     <i class="fa fa-send-o"></i>Sms To All Students </a>
                                 </li>-->
-                                
+                                <?php if($admin['logint_type']!='teacher') { ?>
                                 <li <?php if($page_title=='SMS To Teacher'){ echo 'class="active"'; } ?>><a href="<?php echo base_url().$this->config->item('admin_folder').'/send/teacher'?>">
                                     <i class="fa fa-send-o"></i>Sms To Teacher</a>
                                 </li>
@@ -70,6 +75,7 @@
                                 <li <?php if($page_title=='SMS To Homework'){ echo 'class="active"'; } ?>><a href="<?php echo base_url().$this->config->item('admin_folder').'/send/homework'?>">
                                     <i class="fa fa-send-o"></i>Sms To Homework</a>
                                 </li>
+                            <?php } ?>
                                 <li <?php if($page_title=='SMS To Class'){ echo 'class="active"'; } ?>><a href="<?php echo base_url().$this->config->item('admin_folder').'/send/send-sms-to-class'?>">
                                     <i class="fa fa-send-o"></i>Sms To Class</a>
                                 </li>
@@ -98,7 +104,8 @@
                     </li>
                     <?php } ?>
                     
-                    <?php if($user_id != '') { ?>
+                    <?php
+                     if($user_id != '' && $admin['logint_type']!='teacher') { ?>
                     <li>
                         <a href="javascript:void(0);"><i class="fa fa-users"></i>
                                 <span>Manage</span> <i class="fa fa-angle-left pull-right"></i> 
@@ -122,7 +129,9 @@
 								<li <?php if($page_title=='Manage SMS Temp'){ echo 'class="active"'; } ?>><a href="<?php echo base_url().$this->config->item('admin_folder').'/sms'?>">
                                     <i class="fa fa-check-square-o"></i>Template</a>
                                 </li>
-                               
+                                <li <?php if($page_title=='Assign Class'){ echo 'class="active"'; } ?>><a href="<?php echo base_url().$this->config->item('admin_folder').'/classes/assign'?>">
+                                    <i class="fa fa-check-square-o"></i>Assign Class</a>
+                                </li>                               
                         </ul>
                     </li>
                     
@@ -140,10 +149,9 @@
                                 <li <?php if($page_title=='Manage SMS Att'){ echo 'class="active"'; } ?>><a href="<?php echo base_url().$this->config->item('admin_folder').'/attendance'?>">
                                         <i class="fa fa-check-square-o"></i>Attendance Template</a>
                                 </li>
-
                         </ul>
                     </li>
-                    <?php } ?>
+                   <?php } ?>
 
                     <?php if($admin['logint_type']=='admin' && $admin['user_id']=='') {  ?>
                     <li <?php if($page_title=='Manage SMS API' || $page_title=='Alot SMS API' || $page_title=='Add SMS API'){ echo 'class="active "'; } ?> >
@@ -201,10 +209,17 @@
                                 <li <?php if($page_title=='Site Setting'){ echo 'class="active"'; } ?>><a href="<?php echo base_url().$this->config->item('admin_folder').'/site/mode'?>">
                                         <i class="fa fa-check-square-o"></i>Site Setting</a>
                                 </li>
-                                <?php } ?>
-                                <li <?php if($page_title=='Edit Profile'){ echo 'class="active"'; } ?>><a href="<?php echo base_url().$this->config->item('admin_folder').'/user/mode/'.$edit_id ?>">
+                                <?php }
+                                if($login_type!='teacher') {
+                                $editpath=base_url().$this->config->item('admin_folder').'/user/mode/'.$edit_id;
+                                } else {
+                                $editpath=base_url().$this->config->item('admin_folder').'/teacher/mode/'.$edit_id['id'];
+                                }
+                                ?>
+                             <li <?php if($page_title=='Edit Profile'){ echo 'class="active"'; } ?>><a href="<?php echo $editpath; ?>">
                                         <i class="fa fa-user"></i>Edit Profile</a>
                                 </li>
+                               
                                 <li <?php if($page_title=='log_out'){ echo 'class="active"'; } ?>><a href="<?php echo base_url().$this->config->item('admin_folder').'/login/logout'?>">
                                         <i class="fa fa-power-off"></i>Logout</a>  
                                 </li>

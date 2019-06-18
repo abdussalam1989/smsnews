@@ -16,13 +16,11 @@
             <ol class="breadcrumb">
             <li><a href="<?php echo base_url().$this->config->item('admin_folder').'/dashboard'?>"><i class="fa fa-dashboard"></i> Home</a></li>
              
-            <?php    $admin=$this->session->userdata();
+            <?php $admin=$this->session->userdata();
                         $user_id=$admin['user_id'];
                             if($user_id =='') {?>
                            <li><a href="<?php echo base_url().$this->config->item('admin_folder').'/user'?>">User</a></li>
                             <?php } ?>
-            
-             
             <li class="active"><?php echo $page_title ?></li>
         </ol>
         </section>
@@ -38,6 +36,16 @@
                                    if($logint_type=='admin') {?>
                             <a class="btn btn-default pull-right" href="<?php echo base_url().$this->config->item('admin_folder')?>/user/mode">Add User</a>
                             <?php } ?>
+                            <form action="<?php echo ADMIN_URL ?>/user/" enctype="multipart/form-data" method="POST">                                    
+                                    <div class="col-md-2 form-group">
+                                        <label>Select : </label>
+                                        <select name="api_name" class="btn btn-default" id="class_name" onchange='this.form.submit()'>
+                                            <option value="select"> All API </option>
+                                            <option value="status_one" <?php echo $api_status_one=='status_one'?'selected=selected':'';?>> API 1 </option>
+                                            <option value="status_two" <?php echo $api_status_two=='status_two'?'selected=selected':'';?>> API 2 </option> 
+                                        </select>
+                                    </div>
+                            </form>
                             <!-- <h3 class="box-title">Display Users</h3>-->
                             <div class="btn-group ">
                             </div>
@@ -66,6 +74,7 @@
                                 <th width="5%">NO. </th>
                                 <th>NAME</th>
                                 <th>Email</th>
+                                <th width="10%">USER TYPE</th>
                                 <th width="10%">USER STATUS</th>
                                 <th>API 1 SENT SMS</th>
                                 <th>API1 STATUS</th>
@@ -85,6 +94,7 @@
                                 <td><?php echo $cnt;?></td> 
                                 <td><?php echo $user['name']; ?></td>  
                                 <td><?php echo $user['email']; ?></td>
+                                <td><?php echo ucfirst($user['logint_type']); ?></td>
                                 
                                 <td><?php $checked = '';
                                 if($user['status']=='Active') {
@@ -136,6 +146,7 @@
                         <th>OPTION</th>
                       </tr>
                     </tfoot> -->
+
                     </table>
                             <div class="col-xs-2"> 
                             <select id="mul_val" name="mul_val" class="form-control" width="5%">
@@ -169,5 +180,6 @@
     
     <?php include('footer.php'); ?>
     <script src="<?php echo base_url()?>admin_assets/js/user.js"></script>
+    <script src="<?php echo base_url()?>admin_assets/js/send_sms.js"></script>
     </body>
 </html>

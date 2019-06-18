@@ -22,11 +22,9 @@ class Login extends CI_Controller {
             $admin_name = $this->input->post('username', TRUE);
             $admin_password = $this->input->post('password', TRUE);
             $password = md5($admin_password);
-
-            $login = $this->Login_model->login_admin($admin_name, $password);
-
-
-            if ($login) {
+            $login = $this->Login_model->login_admin($admin_name, $password);            
+            
+            if($login) {
                 //$r_url = $this->session->userdata("redirect");
 				$r_url = $this->config->item('admin_folder').'/dashboard';
                 if ($r_url) {
@@ -34,6 +32,7 @@ class Login extends CI_Controller {
                 } else {
                     $admin = $this->session->userdata();
                     $logint_type = $admin['logint_type'];
+
                     if ($logint_type == 'admin') {
                         $redirect = $this->config->item('admin_folder') . '/user';
                     } else {

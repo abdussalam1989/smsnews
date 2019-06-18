@@ -27,7 +27,25 @@
                     <div class="row">
                         <div class="col-md-7">
                               <div class="box box-primary">
-                            <form role="form" method="POST" enctype="multipart/form-data" action="<?php echo ADMIN_URL ?>/Sendsmsclass/class_sms" onsubmit="return validateForm()">  
+                           
+                                   <br>
+                                   <div class="col-md-2"></div>
+                                    
+                                     <form action="<?php echo ADMIN_URL ?>/Send/getClassgroup" enctype="multipart/form-data" method="POST">
+                                    <div class="col-md-6 form-group">
+                                         <label>Class Group :</label>
+                                        <select name="class_name" class="btn btn-default" id="class_name" onchange='this.form.submit()'>                                            
+                                            <option value="All" <?php if($class_group_id=='All') { echo "selected=selected";}?>> All </option>
+                                            <option value="1" <?php if($class_group_id=='1') { echo "selected=selected";}?>> Nursery </option>
+                                            <option value="2" <?php if($class_group_id=='2') { echo "selected=selected";}?>> Primary </option>
+                                            <option value="3" <?php if($class_group_id=='3') { echo "selected=selected";}?>> Secondary </option>
+                                            <option value="4" <?php if($class_group_id=='4') { echo "selected=selected";}?>> Sr. Secondary </option>
+                                                
+                                        </select>
+                                    </div>
+                                    </form>
+
+                                 <form role="form" method="POST" enctype="multipart/form-data" action="<?php echo ADMIN_URL ?>/Sendsmsclass/class_sms" onsubmit="return validateForm()"> 
                                 <?php if (empty($get_group_list)) {                           									
 								?>
 								
@@ -110,9 +128,10 @@
                                                             ?>  <option value="<?php echo $get_msg['for_name'] ?>" > <?php echo $get_msg['for_name']; ?></option> <?php
                                                         }
                                                     } else {
+                                                        if ($get_msg['for_name'] != 'None') {
                                                         ?>
                                                         <option value="<?php echo $get_msg['for_name'] ?>"  <?php if ($get_msg['for_name'] == 'None') { ?> selected="selected" <?php } ?> > <?php echo $get_msg['for_name']; ?></option>
-                                                    <?php } ?>
+                                                    <?php } } ?>
                                                 <?php } ?>                                    
                                             </select> 
                                         </div>
@@ -200,6 +219,7 @@
     <?php $this->load->view($this->config->item('admin_folder') . '/footer'); ?>
     <script src="<?php echo base_url() ?>admin_assets/js/data.js"></script>
     <script src="<?php echo base_url() ?>admin_assets/js/sms.js"></script>
+    <script src="<?php echo base_url(); ?>admin_assets/js/send_sms.js"></script>
 
 </body>
 

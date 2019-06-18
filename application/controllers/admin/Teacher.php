@@ -105,7 +105,7 @@ class Teacher extends CI_Controller {
             $admin=$this->session->userdata();
             $user_id=$admin['user_id'];
             $user=$admin['logint_type'];
-            
+            $data['login_type']=$admin['logint_type'];
             $data['employ_id']=get_list_by_field('user_id',$user_id, STAFF);
             /*if($admin['logint_type']=='user')
             {
@@ -129,18 +129,58 @@ class Teacher extends CI_Controller {
                 }
                     if(isset($_REQUEST['submit']))
                     {
+                        if($user!='teacher') {
+                        $class_id=$this->input->post('class_id',TRUE);
+                        $save['class_id']=implode(',', $class_id);
+                        } 
                         $save['name']=$this->input->post('name',TRUE);
                         $save['employ_id']=$this->input->post('employ_id',TRUE);
                         $save['email']=$this->input->post('email',TRUE);
                         $save['mobile_no']=$this->input->post('mobile_no',TRUE);
-                        $save['status']=$this->input->post('status',TRUE);    
+                        $save['status']=$this->input->post('status',TRUE);
+                        $password=$this->input->post('password');
+                        $userdata['user']  = get_list_by_id($user_id, USERS);
+                        $teacherdata['banner']=$userdata['user']['banner'];          
+                        $teacherdata['name']=$save['name'];                        
+                        $teacherdata['logint_type']='teacher';
+                        $teacherdata['email']=$save['email'];
+                        $teacherdata['contact']=$save['mobile_no'];
+                        $teacherdata['status']=$save['status'];
+                        if($password!="") {
+                        $teacherdata['password']=md5($this->input->post('password',TRUE));
+                        }
+                        $teacherdata['school_name']=$userdata['user']['school_name'];
+                        $teacherdata['institution']=$userdata['user']['institution'];
+                        $teacherdata['landline_contact']=$userdata['user']['landline_contact'];
+                        $teacherdata['username_one']=$userdata['user']['username_one'];
+                        $teacherdata['password_one']=$userdata['user']['password_one'];
+                        $teacherdata['senderid_one']=$userdata['user']['senderid_one'];
+                        $teacherdata['smstype_one']=$userdata['user']['smstype_one'];
+                        $teacherdata['prioritydetails_one']=$userdata['user']['prioritydetails_one'];
+                        $teacherdata['total_sms_one']=$userdata['user']['total_sms_one'];
+                        $teacherdata['sentsms_one']=$userdata['user']['sentsms_one'];
+                        $teacherdata['status_one']=$userdata['user']['status_one'];
+                        $teacherdata['username_two']=$userdata['user']['username_two'];
+                        $teacherdata['password_two']=$userdata['user']['password_two'];
+                        $teacherdata['senderid_two']=$userdata['user']['senderid_two'];
+                        $teacherdata['smstype_two']=$userdata['user']['smstype_two'];
+                        $teacherdata['prioritydetails_two']=$userdata['user']['prioritydetails_two'];
+                        $teacherdata['total_sms_two']=$userdata['user']['total_sms_two'];
+                        $teacherdata['sentsms_two']=$userdata['user']['sentsms_two'];
+                        $teacherdata['status_two']=$userdata['user']['status_two'];
+                        $teacherdata['api_two_hash']=$userdata['user']['api_two_hash'];
+                        $teacherdata['r_sms_one']=$userdata['user']['r_sms_one'];
+                        $teacherdata['r_sms_two']=$userdata['user']['r_sms_two'];
+                        $teacherdata['t_sms_one']=$userdata['user']['t_sms_one'];
+                        $teacherdata['t_sms_two']=$userdata['user']['t_sms_two'];
+                        $teacherdata['red_sms_one']=$userdata['user']['red_sms_one'];
+                        $teacherdata['red_sms_two']=$userdata['user']['red_sms_two'];
+                        $teacherdata['language_option']=$userdata['user']['language_option'];
+                        
                             //check email id valid or not
-                            //$check_email_val=check_email_validation($save['email']);
-                            
+                            //$check_email_val=check_email_validation($save['email']);                            
                             //check number
-                            $check_contact=allow_only_number($save['mobile_no']);
-                            
-                            
+                            $check_contact=allow_only_number($save['mobile_no']);                            
                             //check empty records 
                             /*$check_required_val=check_required($save);
                         
@@ -159,7 +199,7 @@ class Teacher extends CI_Controller {
                                     $data['val_error']='Only number allow on Mobile number';
                             }
                             $data['data']=$save;
-                            
+                            $data['id']=$id;
                                 if($id=='')
                                 {
                                     //check already exits value
@@ -183,8 +223,17 @@ class Teacher extends CI_Controller {
                                     $save['slug']=createSlugUrl(CLASS_TEACHER,$str);
                                     if($data['val_error']=='') 
                                     {
+                                        /*echo "<pre>";
+                                        print_r($teacherdata);
+                                        
+                                        print_r($userdata['user']);
+                                        die;*/
+                                        $teacherdata['slug']=$save['slug'];
+                                        $adduser=insert_record(USERS, $teacherdata);
+                                        $last_insert_id=$this->db->select('id')->order_by('id',"desc")->limit(1)->get(USERS)->result_array();
+                                        $save['login_id']=$last_insert_id[0]['id'];
                                         $add=insert_record(CLASS_TEACHER, $save);
-                                        if($add){
+                                        if($add && $adduser){
                                                     $this->session->set_flashdata('success', 'You have successfully Added teacher !!' );
                                                     redirect($this->config->item('admin_folder').'/teacher');
                                         } else {
@@ -194,22 +243,38 @@ class Teacher extends CI_Controller {
                                     }
                                 } else {
                                         $id=$this->input->post('data_id',TRUE);
+                                        $login_id=$this->input->post('login_id',TRUE);
                                         $str=$save['name'];
                                         $save['editdate']=date("Y-m-d h:m:s");
+                                        $save['slug']=createSlugUrl(CLASS_TEACHER,$str);
+                                        $teacherdata['slug']=$save['slug'];
                                         if($data['val_error'] == '')
                                         {
+                                            $resultuser=check_user_exist_or_not(USERS,$save['email']);                                      if(empty($resultuser)) {                                             
+                                            $adduser=insert_record(USERS, $teacherdata);
+                                            $last_insert_id=$this->db->select('id')->order_by('id',"desc")->limit(1)->get(USERS)->result_array();
+                                            $save['login_id']=$last_insert_id[0]['id'];
                                             $upd = update_record($save,$id,CLASS_TEACHER);
+                                            } else {
+                                            $upduser = update_record($teacherdata,$login_id,USERS);
+                                            $upd = update_record($save,$id,CLASS_TEACHER);
+                                            }
                                             if($upd) 
                                             {       
                                                     $this->session->set_flashdata('success', 'You have successfully updated teacher !!' );
+                                                    if($user!='teacher') {
                                                     redirect($this->config->item('admin_folder').'/teacher');
+                                                    } else {
+                                                    redirect($this->config->item('admin_folder').'/dashboard');
+                                                    }
                                             } else {
-                                                    $this->session->set_flashdata('error', 'Error while updating teacher!!' );
+                                                    $this->session->set_flashdata('error', 'Error while updating teacher!!');
                                                     redirect($this->config->item('admin_folder').'/teacher/mode');
                                             }
                                         }
                                 }
                         }
+                      
                 $this->load->view($this->config->item('admin_folder').'/teacher_form', $data);
         }
         

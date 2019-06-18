@@ -34,6 +34,8 @@ class Sendtogroup extends CI_Controller {
 			$json['status'] = 'failure';
             $save['message'] = trim($this->input->post('message', TRUE));
             $save['msg_for'] = $this->input->post('msg_for', TRUE);
+            $language=$this->input->post('language', TRUE);
+           
             $save['user_id'] = $user_id;
             $save['send_sms_type'] = 'Group';
             $save['sms_type'] = $this->input->post('sms_type', TRUE);
@@ -128,7 +130,8 @@ class Sendtogroup extends CI_Controller {
 
                     $group_data = get_list_by_id($group_list, GROUP);
                     $save['group_id'] = $group_list;
-                    $mb_no = explode(",", $group_data['mobile_number']);
+                    $mb_nos = explode(",", $group_data['mobile_number']);
+                    $mb_no=array_unique($mb_nos);
                     foreach ($mb_no as $key => $numbers) {
 						  $numbers =  trim($numbers);			
 						  
@@ -145,19 +148,26 @@ class Sendtogroup extends CI_Controller {
                                     $numbers = $numbers;
                                     $sender = $sender;
                                     $data_one = array('user'=>$username, 'pass'=>$password, 'phone'=>$numbers, "sender"=>$sender, 'text'=>$save['message'],'priority'=>$api_priority,'stype'=>$api_type);
-                                    $send_report=send_sms_one($data_one,$save);                          
-                                    $active_one++;
+                                    $send_report=send_sms_one($data_one,$save);
+                                    if(preg_match('/^\d{10}$/',$numbers)) {
+                                    $save['response_id']=$send_report;                       
+                                    $save['msg_status']='Pending';
+                                    $save['is_send']=0;
+                                    $store_data[$key]= $save;
+                                    } else {                         
+                                    $j_error++;
                                     $save['response_id']=$send_report;                       
                                     $save['msg_status']='Pending';
                                     $save['is_send']=0;
                                     $store_data[$key]= $save;
                                 }
+                                } else {
                                 if ($get_user_list['status_two'] == 'Active') {                                    
                                     $save['api_name'] = 'two';
                                     
-                                    $data = array('username' => $username, 'hash' => $hash, 'numbers' => $numbers, "sender" => $sender, "message" => $message, "unicode" => true);                                 
+                                    $data = array('username' => $username, 'hash' => $hash, 'numbers' => $numbers, "sender" => $sender, "message" => $message,'unicode'=>$language=='hindi'?1:0);                                 
                                 }
-								if($data!=""){
+								if($data!="") {
 								// Send sms
 								$json = send_sms($data, $save);
 								$store_data[$i_key] = $save;
@@ -171,13 +181,14 @@ class Sendtogroup extends CI_Controller {
 								}
 								
 							}
+                            }   
                             } else {
                                 if (isset($save['schedule_date'])) {
                                     $dated = strtotime($save['schedule_date']);
                                     if ($get_user_list['status_two'] == 'Active') {
                                         $save['api_name'] = 'two';                                        
                                         $schedule_time = $dated;
-                                        $data = array('username' => $username, 'hash' => $hash, 'numbers' => $numbers, "sender" => $sender, "message" => $message, "schedule_time" => $dated, "unicode" => true);                                       
+                                        $data = array('username' => $username, 'hash' => $hash, 'numbers' => $numbers, "sender" => $sender, "message" => $message, "schedule_time" => $dated ,'unicode'=>$language=='hindi'?1:0);                                       
                                     }
 								if($data!=""){
 								// Send sms for schedule
@@ -212,7 +223,7 @@ class Sendtogroup extends CI_Controller {
 				}
 			
             }
-           if ($j_error == 0 || $active_one > 0) {       
+           if ($j_error == 0) {       
                  $this->session->set_flashdata('success', 'Message send succesfully');
                 redirect($this->config->item('admin_folder') . '/send/group');
             } else {

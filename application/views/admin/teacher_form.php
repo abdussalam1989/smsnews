@@ -28,14 +28,14 @@
                                 <span class="has-error"><?php echo $this->session->flashdata('error_msg'); ?></span>
                     </div>
                     <div class="box-body">
-                        <form role="form" method="POST" enctype="multipart/form-data" action="<?php echo $mode; ?>">  
-                            
+                        <form role="form" method="POST" enctype="multipart/form-data" action="<?php echo $mode; ?>">                              
                             <div class="col-md-3">
                                  <label>Name <span class="has-error">*</span></label>
                             </div>
                             <div class="col-md-9 form-group">
-                                <input type="text" class="form-control" name="name" id="name"  placeholder="Enter name" value="<?php  if(isset($data['name'])){echo $data['name']; }else{echo set_value('name'); }?>">
+                                <input type="text" class="form-control" name="name" id="name" required="required" placeholder="Enter name" value="<?php  if(isset($data['name'])){echo $data['name']; }else{echo set_value('name'); }?>">
                                 <input type="hidden" name="data_id" id="data_id" value="<?php if(isset($data['id'])) { echo $data['id']; } ?>">
+                                <input type="hidden" name="login_id" id="login_id" value="<?php if(isset($data['login_id'])) { echo $data['login_id']; } ?>">
                             </div>
                             
                             
@@ -57,27 +57,48 @@
                             <div class="col-md-9 form-group">
                                 <input type="text" class="form-control" name="employ_id" id="employ_id"   placeholder="Employ id" value="<?php  if(isset($data['employ_id']) != null){echo $data['employ_id']; } else {echo set_value('employ_id'); }?>"  >
                             </div>
-                            
-                            
+                                                        
                             <div class="col-md-3">
-                                    <label>Email address <span class="has-error"></span></label>
+                                <label>Email address <span class="has-error"></span></label>
                             </div>
                             <div class="col-md-9 form-group">
-                                    <input type="text" class="form-control" name="email" id="email"   placeholder="Enter email" value="<?php  if(isset($data['email']) != null){echo $data['email']; } else {echo set_value('email'); }?>"  >
+                                    <input type="email" class="form-control" name="email" id="email" required="required"   placeholder="Enter email" value="<?php  if(isset($data['email']) != null){ echo $data['email']; } else {echo set_value('email'); }?>" <?php echo $data['email']!=""?"readonly":""?> >
                             </div>
                             
                             <div class="col-md-3">
                                 <label>Mobile no <span class="has-error">*</span></label>
                             </div>
                             <div class="col-md-9 form-group">
-                                <input type="text" class="form-control" name="mobile_no" id="mobile_no" maxlength="10" placeholder="Enter Mobile number" value="<?php  if(isset($data['mobile_no']) != null){echo $data['mobile_no']; }else{echo set_value('mobile_no'); }?>">
+                                <input type="number" class="form-control" name="mobile_no" required="required" id="mobile_no" maxlength="10" placeholder="Enter Mobile number" value="<?php  if(isset($data['mobile_no']) != null){echo $data['mobile_no']; } else { echo set_value('mobile_no'); }?>">
                             </div>
-                            
+                        <?php if($login_type!='teacher') { 
+                         if($data['id']!="") {
+                         ?>
+
+                        <div class="col-md-3">
+                                <label>Assign Class <span class="has-error">*</span></label>
+                        </div>
+                         <div class="col-md-9 form-group">
+                          <select name="class_id[]" class="selectpicker form-control" multiple>
+                         <?php $class_detail=get_total_class_list_by_user_id(explode(',',$data['class_id']), CLASSES); 
+                         foreach($class_detail as $value) :  ?>  
+                        <option value="<?php echo $value['id'] ?>" selected="selected"><?php echo $value['name'] ?></option>
+                        <?php endforeach;?>
+                         </select>
+                          </div>
+                         <?php } ?> 
+                            <div class="col-md-3">
+                                <label>Password <span class="has-error">*</span></label>
+                            </div>
+                            <div class="col-md-9 form-group">
+                                <input type="password" class="form-control" name="password" id="password"  placeholder="Enter Password" <?php if($data['id']!="") { } else { echo "required"; }?>>
+                            </div>
+                      <?php } ?>
                             <div class="col-md-3">
                                 <label>Status <span class="has-error">*</span></label>
                             </div>
                             <div class="col-md-9 form-group">
-                                <select name="status" class="form-control" id="status">
+                                <select name="status" required="required" class="form-control" id="status">
                                     <option value="" <?php if(isset($data['id'])){?> disabled='' <?php } ?>> Select </option>
                                     <?php foreach($status as $key=>$value): ?>
                                     <option value="<?php echo $value; ?>" <?php if(isset($data['status'])){if($value == $data['status']){ ?> selected <?php } } ?>  ><?php echo $value; ?></option>
@@ -93,11 +114,13 @@
                         </form>
                         </div>
                 </div><!-- /.col-->
+               <?php if($login_type!='teacher') { ?>
                 <div class="col-md-3">
                     <div class="btn-group pull-right box-header">
                         <a class="btn btn-default" href="<?php echo base_url().$this->config->item('admin_folder')?>/teacher">Manage Teacher</a>
                     </div> 
                 </div>
+               <?php } ?>
             </div><!-- ./row -->
              </div><!-- /.box -->
     </section><!-- /.content -->
@@ -105,5 +128,11 @@
             </div> 
     </div><!-- ./wrapper -->
     <?php include('footer.php')?>
+
 </body>
 </html>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/css/bootstrap-select.min.css"> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.7.5/js/bootstrap-select.min.js"></script>
+
+

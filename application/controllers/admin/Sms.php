@@ -34,16 +34,22 @@ class Sms extends CI_Controller {
     }
 
     function report() {
+
         //echo "Aftab Siddiqui";die;
         $data['page_title'] = 'SMS Report';
         $admin = $this->session->userdata();
         $user_id = $admin['user_id'];
-        $get_user_list=get_list_by_id($user_id, USERS);
-        if($get_user_list['status_one']=='Active'){
-        $resultstatus=$this->Data_model->sms_detail_sent_status($user_id);
-       foreach($resultstatus as $key=>$smsdata){
-       if($smsdata['response_id']!="") {
-       $data = array('user'=>$get_user_list['username_one'], 'phone'=>$smsdata['mobile_no'], "msgid"=>$smsdata['response_id'],'msgtype'=>$get_user_list['prioritydetails_one']);
+        $user = $admin['logint_type'];
+        $get_user_list=get_list_by_id($user_id, USERS);        
+        if($get_user_list['status_one']=='Active') {
+        if($user!='teacher') {
+        $resultstatus=$this->Data_model->sms_detail_sent_status($user_id); 
+        } else {
+        $resultstatus=$this->Data_model->sms_detail_sent_status_by_teacher($user_id);
+        }       
+        foreach($resultstatus as $key=>$smsdata){
+        if($smsdata['response_id']!="") {
+        $data = array('user'=>$get_user_list['username_one'], 'phone'=>$smsdata['mobile_no'], "msgid"=>$smsdata['response_id'],'msgtype'=>$get_user_list['prioritydetails_one']);
         $response=send_sms_response($data);
         if($response=='Sent'){           
             $store_data['msg_status'] = 'Delivered';
@@ -62,9 +68,11 @@ class Sms extends CI_Controller {
     function reportajax() {
         $admin = $this->session->userdata();
         $user_id = $admin['user_id'];
+        $usertype = $admin['logint_type'];
 
         // DB table to use
         $get_user_list=get_list_by_id($user_id, USERS);
+        $get_teacher_id=get_list_by_admin_sms($user_id,'user_id',CLASS_TEACHER);    
         if($get_user_list['status_one']=='Active') {
         $table = SMS_LOG_ONE;
         } else {
@@ -173,15 +181,22 @@ class Sms extends CI_Controller {
                 . " LEFT OUTER JOIN student AS st ON st.id=sl.stud_id "
                 . " LEFT OUTER JOIN class_teacher AS ct ON ct.id=sl.teacher_id"
                 . " LEFT OUTER JOIN staff AS sf ON sf.id=sl.staff_id";
+        if($usertype!='teacher') {
         $extraWhere = "sl.user_id='" . $user_id . "' " . $where . " ORDER BY sl.id DESC";
+        } else {
+        $extraWhere = "sl.teacher_id='" . $user_id . "' " . $where . " ORDER BY sl.id DESC";    
+        }
         } else {
         $joinQuery = "FROM sms_log AS sl "
                 . " LEFT OUTER JOIN student AS st ON st.id=sl.stud_id "
                 . " LEFT OUTER JOIN class_teacher AS ct ON ct.id=sl.teacher_id"
                 . " LEFT OUTER JOIN staff AS sf ON sf.id=sl.staff_id";
+        if($usertype!='teacher') {
         $extraWhere = "sl.user_id='" . $user_id . "' " . $where . " ORDER BY sl.id DESC";
-        }
-        
+        } else {
+        $extraWhere = "sl.teacher_id='" . $user_id . "' " . $where . " ORDER BY sl.id DESC";    
+        } 
+        }        
 
         //$groupBy="sl.id DESC";
         //$joinQuery = "FROM sms_log AS sl JOIN student AS st ON sl.mobile_no=st.mobile_no where sl.user_id='".$user_id."' ";

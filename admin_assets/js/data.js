@@ -74,6 +74,32 @@ $(function () {
 $("#ckbCheckAll2").click(function () {
     $(".checkBoxClass").prop('checked', $(this).prop('checked'));
 });
+
+
+$("#ckbCheckAll2").change(function(){
+    if(this.checked){
+      $(".checkBoxClass").each(function(){
+        this.checked=true;
+      })              
+    }else{
+      $(".checkBoxClass").each(function(){
+        this.checked=false;
+      })              
+    }
+  });
+
+  $(".checkBoxClass").click(function () {
+    if ($(this).is(":checked")){
+      var isAllChecked = 0;
+      $(".checkBoxClass").each(function(){
+        if(!this.checked)
+           isAllChecked = 1;
+      })              
+      if(isAllChecked == 0){ $("#ckbCheckAll2").prop("checked", true); }     
+    }else {
+      $("#ckbCheckAll2").prop("checked", false);
+    }
+  });
 //select all check box
 $("#ckbCheckAll4").click(function () {
     $(".checkBoxClasstwo").prop('checked', $(this).prop('checked'));

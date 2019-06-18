@@ -98,7 +98,7 @@
                             <a href="<?php echo base_url() . $this->config->item('admin_folder') ?>/sms/report" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
-
+                    <?php if($user_data['logint_type']!='teacher') { ?>
                     <div class="col-lg-4 col-xs-6">
                         <div class="small-box bg-yellow">
                             <div class="inner">
@@ -161,6 +161,7 @@
                             <a href="<?php echo base_url() . $this->config->item('admin_folder') . '/sms/report' ?>" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
                         </div>
                     </div> <!-- ./col -->
+                <?php } ?>
 
                 </div><!-- /.row -->
                 <!-- Main row -->

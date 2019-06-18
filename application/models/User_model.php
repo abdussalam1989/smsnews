@@ -8,21 +8,6 @@ class User_model extends CI_Model
             parent::__construct();
         }
         
-        /*function insert_user($save)
-	{
-		$this->db->insert(USERS, $save);
-		//$id = $this->db->insert_id();
-		//return $id;
-                if($this->db->affected_rows() > 0)
-                {
-                        return 1;
-                }
-                else
-                {
-                        return 0;
-                }  
-	}*/
-        
         function getcountry()
         {
             $this->db->select('*');
@@ -56,11 +41,19 @@ class User_model extends CI_Model
             return $query->result_array();
         }
         
-        function get_user_list()
+        function get_user_list($api)
         {
-           $this->db->select('name,total_sms_one,total_sms_two,status,email,status_one,status_two,id');
+           $this->db->select('name,total_sms_one,logint_type,total_sms_two,status,email,status_one,status_two,id');
             // $this->db->select('*');
             $this->db->where('logint_type','user');
+            $this->db->or_where('logint_type','teacher');
+            if($api=='status_one') {
+            $this->db->where('status_one','Active');
+            } else if($api=='status_two') {
+            $this->db->where('status_two','Active');
+            } else  {
+
+            }
             $query=$this->db->get(USERS);
             return $query->result_array();
         }

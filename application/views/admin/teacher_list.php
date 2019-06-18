@@ -39,7 +39,7 @@
                                     <th width="5%">NO. </th>
                                     <th>TEACHER ID</th>
                                     <th>TEACHER NAME</th>
-                                    <th>TEACHER MOBILE NO.</th>
+                                    <th>TEACHER MOBILE NO.</th>                                    
                                     <th width="10%">STATUS</th>
                                     <th width="8%">OPTION</th>
                                 </tr>
@@ -55,6 +55,7 @@
                                     <th>TEACHER ID</th>
                                     <th>TEACHER NAME</th>
                                     <th>TEACHER MOBILE NO.</th>
+                                    <th>ASSIGN CLASS NAME</th>
                                     <th width="10%">STATUS</th>
                                     <th width="8%">OPTION</th>
                                 </tr>
@@ -69,7 +70,19 @@
                                     <td><?php echo $cnt;?></td> 
                                     <td><?php echo $data_list['employ_id'];?></td>  
                                     <td><?php echo $data_list['name'];?></td>  
-                                    <td><?php echo $data_list['mobile_no'];?></td>  
+                                    <td><?php echo $data_list['mobile_no'];?></td>
+                                    <td><?php
+
+                                    $class=get_list_by_teacher_class_id(explode(',',$data_list['class_id']),CLASSES);
+                                    $classdetail="";
+                                    foreach($class as $key=>$value) {
+                                      if($classdetail=="") {
+                                        $classdetail=$value['name'];
+                                      } else {
+                                        $classdetail.=", ".$value['name'];
+                                      }                                      
+                                    }
+                                    echo $classdetail; ?></td>  
                                     <td><?php $checked = '';
                                     if($data_list['status']=='Active'){
                                         $checked = 'checked'; ?>  

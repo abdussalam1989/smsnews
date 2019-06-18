@@ -206,6 +206,16 @@ function get_list_by_id($id, $table) {
     return $result;
 }
 
+function get_class_list_by_id($userid,$classgroup,$table) {
+    $ci = & get_instance();
+    $ci->db->where('user_id', $userid);
+    $ci->db->where('class_group_id',$classgroup);
+    $query = $ci->db->get($table);
+    $result = $query->row_array();
+    //echo $ci->db->last_query(); exit;
+    return $result;
+}
+
 //get single record by id
 function get_list_by_idd($id, $field, $table) {
     $ci = & get_instance();
@@ -278,10 +288,16 @@ function get_list1($table) {
     return $query->result_array();
 }
 
-function get_listt($table) {
+function get_listt($table,$user) {
+   
     $ci = & get_instance();
     $ci->db->select('*');
+    if($user!='teacher') {
     $ci->db->order_by('id', "ASC");
+    } else {
+    $ci->db->order_by('id', "ASC");
+    $ci->db->where_in('for_name', ['Parents','Student']);    
+    }
     $query = $ci->db->get($table);
     return $query->result_array();
 }
@@ -508,7 +524,19 @@ function get_sms_list($user_id, $send_sms_type) {
 function get_list_by_user_id($user_id, $table_name) {
     $ci = & get_instance();
     $ci->db->select('*');
+    $ci->db->where('user_id',$user_id);
+    $ci->db->where('status', 'Active');
+    $query = $ci->db->get($table_name);
+    //echo $ci->db->last_query(); exit;
+    $result = $query->result_array();
+    return $result;
+}
+
+function get_class_list_by_user_id($user_id, $classgroup, $table_name) {
+    $ci = & get_instance();
+    $ci->db->select('*');
     $ci->db->where('user_id', $user_id);
+    $ci->db->where('class_group_id', $classgroup);
     $ci->db->where('status', 'Active');
     $query = $ci->db->get($table_name);
     //echo $ci->db->last_query(); exit;
@@ -542,37 +570,20 @@ function sms_count($msg) {
 
 // send message using api
 function send_sms($data, $save) {
-	
     $ch = curl_init('http://smartsms.clickschooldiary.com/api2/send/');
-	//$ch = curl_init();
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     $send_report = curl_exec($ch);
     curl_close($ch);
-    
-    // Process your response here
-
     $json = json_decode($send_report, true);
-
-   /*if($json['status'] == 'success') {
-        $save['msg_status'] = 'Delivered';
-        $save['is_send'] = 1;
-    } else {
-        $save['msg_status'] = 'failure';
-    }
-    if(!empty($save['mobile_no'])) {
-        $add = insert_record(SMS_LOG, $save);
-    } else {
-        $add = true;
-    }*/
     return $json;
 }
 
 // For API One Integration function //
 
 function send_sms_one($data, $save) {
-    
+
     $ch = curl_init('http://smsw.clickschooldiary.com/api/sendmsg.php');
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
@@ -836,6 +847,109 @@ function get_current_date_time() {
     date_default_timezone_set('Asia/Kolkata');
     $date = date('Y-m-d h:i:s');
     return $date;
+}
+
+function get_teacher_list_by_idd($id, $field, $table) {
+    $ci = & get_instance();
+    $ci->db->where($field, $id);
+    $ci->db->where('status','Active');
+    $query = $ci->db->get($table);
+    $result = $query->result_array();
+    //echo $ci->db->last_query(); exit;
+    return $result;
+}
+
+function update_table_record($data, $id, $table) {    
+    $ci = & get_instance();
+    $ci->db->where('id', $id);
+    $upd = $ci->db->update($table, $data);
+    if ($upd)
+        return true;
+    else
+        return false;
+}
+
+function get_teacher_list_by_user_id($user_id, $table_name) {
+    $ci = & get_instance();
+    $ci->db->select('*');   
+    $ci->db->where('status', 'Active');
+     $ci->db->where('login_id',$user_id);
+    $query = $ci->db->get($table_name);    
+    $result = $query->row_array();
+    return $result;
+}
+
+function get_total_class_list_by_user_id($class_id, $table_name) {
+    $ci = & get_instance();
+    $ci->db->select('*');   
+    $ci->db->where('status','Active');
+     $ci->db->where_in('id',$class_id);
+    $query = $ci->db->get($table_name);    
+    $result = $query->result_array();
+    return $result;
+}
+
+
+function get_list_by_class_ids($id, $field, $table) {
+    $ci = & get_instance();
+    $ci->db->where_in($field, $id);
+    $query = $ci->db->get($table);
+    $result = $query->result_array();
+    //echo $ci->db->last_query(); exit;
+    return $result;
+}
+
+function get_list_by_teacher_class_id($class_id, $table_name) {
+    $ci = & get_instance();
+    $ci->db->select('*');
+    $ci->db->where_in('id',$class_id);
+    $ci->db->where('status', 'Active');
+    $query = $ci->db->get($table_name);
+    //echo $ci->db->last_query(); exit;
+    $result = $query->result_array();
+    return $result;
+}
+
+function get_class_list_by_teacher_class_id($class_id, $classgroup, $table_name) {
+    $ci = & get_instance();
+    $ci->db->select('*');
+    $ci->db->where_in('id', $class_id);
+    $ci->db->where('class_group_id', $classgroup);
+    $ci->db->where('status', 'Active');
+    $query = $ci->db->get($table_name);
+    //echo $ci->db->last_query(); exit;
+    $result = $query->result_array();
+    return $result;
+}
+
+function get_list_by_login_id($id, $table) {
+    $ci = & get_instance();
+    $ci->db->select('id');
+    $ci->db->where('login_id', $id);
+    $query = $ci->db->get($table);
+    $result = $query->row_array();
+    //echo $ci->db->last_query(); exit;
+    return $result;
+}
+
+function get_list_by_admin_sms($id, $field, $table) {
+    $ci = & get_instance();
+    $ci->db->select('login_id');
+    $ci->db->where($field, $id);
+    $query = $ci->db->get($table);
+    $result = $query->result_array();
+    //echo $ci->db->last_query(); exit;
+    return $result;
+}
+
+function check_user_exist_or_not($table,$email) {
+    $ci = & get_instance();
+    $ci->db->select('*');
+    $ci->db->where('email', $email);
+    $query = $ci->db->get($table);
+    $result = $query->result_array();
+    //echo $ci->db->last_query(); exit;
+    return $result;
 }
 
 

@@ -160,9 +160,10 @@
                                                                 ?>  <option value="<?php echo $get_msg['for_name'] ?>" > <?php echo $get_msg['for_name']; ?></option> <?php
                                                             }
                                                         } else {
+                                                            if($get_msg['for_name'] != 'None') {
                                                             ?>
                                                             <option value="<?php echo $get_msg['for_name'] ?>"  <?php if ($get_msg['for_name'] == 'None') { ?> selected="selected" <?php } ?> > <?php echo $get_msg['for_name']; ?></option>
-                                                        <?php } ?>
+                                                        <?php } } ?>
                                                     <?php } ?>                                    
                                                 </select> 
                                             </div>

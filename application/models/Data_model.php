@@ -283,6 +283,16 @@ class Data_model extends CI_Model {
 			$query=$this->db->get(STUDENT);
 			return $query->result_array();
         }
+
+        function get_student_list_by_teacher_class_id($class_id)
+        {       
+            $this->db->select('name,class_name,roll_no,father_name,id,class_id,admission_no,mobile_no,alternate_no');
+            $this->db->where_in('class_id',$class_id);
+            $this->db->where('status','Active');
+            //$this->db->order_by('roll_no',"DESC");
+            $query=$this->db->get(STUDENT);
+            return $query->result_array();
+        }
         
         function get_student_list_by_group_id($group_id,$user_id)
         {
@@ -479,12 +489,36 @@ class Data_model extends CI_Model {
         }
 
         function sms_detail_sent_status($userid) {
-        $this->db->select('*');
+        $this->db->select('*');        
         $this->db->where('sms_log_one.user_id',$userid);
         $this->db->where('sms_log_one.msg_status','Pending');
         $this->db->where('sms_log_one.is_send',0);
         $query=$this->db->get(SMS_LOG_ONE);
         $result= $query->result_array();
+        return $result; 
+        }
+
+
+        function sms_detail_sent_status_by_teacher($userid) {
+        $this->db->select('*');        
+        $this->db->where('sms_log_one.teacher_id',$userid);
+        $this->db->where('sms_log_one.msg_status','Pending');
+        $this->db->where('sms_log_one.is_send',0);
+        $query=$this->db->get(SMS_LOG_ONE);
+        $result= $query->result_array();
+        return $result; 
+        }
+
+        function sms_detail_sent_status_by_class($userid) {
+        $this->db->select('*');
+        $this->db->where_in('sms_log_one.user_id',$userid);
+        $this->db->where('sms_log_one.msg_status','Pending');
+        $this->db->where('sms_log_one.is_send',0);
+        $query=$this->db->get(SMS_LOG_ONE);
+        $result= $query->result_array();
+        echo "<pre>";
+        count($result);
+        die;
         return $result; 
         }
         

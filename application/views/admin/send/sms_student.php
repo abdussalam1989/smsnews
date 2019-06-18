@@ -31,7 +31,7 @@
                                 <form action="<?php echo ADMIN_URL ?>/send/getclass" enctype="multipart/form-data" method="POST">    
                                     <div class="col-md-2"></div>
                                     <div class="col-md-2">
-                                        <label>Class :</label>
+                                        <label> Class : </label>
                                     </div>
                                     <div class="col-md-2 form-group">
                                         <select name="class_name" class="btn btn-default" id="class_name" onchange='this.form.submit()'>
@@ -165,9 +165,10 @@
                                                                 ?>  <option value="<?php echo $get_msg['for_name'] ?>" > <?php echo $get_msg['for_name']; ?></option> <?php
                                                             }
                                                         } else {
+                                                            if ($get_msg['for_name'] != 'None') {
                                                             ?>
                                                             <option value="<?php echo $get_msg['for_name'] ?>" <?php if ($get_msg['for_name'] == 'None') { ?> selected="selected" <?php } ?> > <?php echo $get_msg['for_name']; ?></option>
-                                                        <?php } ?>
+                                                        <?php } } ?>
                                                     <?php } ?>                                    
                                                 </select> 
                                             </div>

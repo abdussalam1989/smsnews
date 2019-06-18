@@ -48,6 +48,19 @@
                                 <?php endforeach; ?> 
                                 </select>
                             </div>
+
+                            <div class="col-md-3">
+                                <label>Class Group : </label>
+                            </div>
+                            <div class="col-md-9 form-group">
+                                <select name="class_group" class="form-control" id="class_group">
+                                <option value=""> Select class Group </option>
+                                <option value="1" <?php if($data['class_group_id']=='1') { echo "selected=selected"; }?>> Nursery </option>
+                                <option value="2" <?php if($data['class_group_id']=='2') { echo "selected=selected"; }?>> Primary </option>
+                                <option value="3" <?php if($data['class_group_id']=='3') { echo "selected=selected"; }?>> Secondary </option>
+                                <option value="4" <?php if($data['class_group_id']=='4') { echo "selected=selected"; }?>> Sr. Secondary </option>
+                                </select>
+                            </div>
                             
                             <div class="col-md-3">
                                 <label>Status <span class="has-error">*</span></label>

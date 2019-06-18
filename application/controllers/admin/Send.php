@@ -11,7 +11,7 @@ class Send extends CI_Controller {
         $this->load->model('Data_model');
 
         $redirect = $this->auth->is_logged_in();
-        if ($redirect == false) {
+        if($redirect == false) {
             $this->session->set_userdata("redirect", current_url());
             redirect($this->config->item('admin_folder') . '/login');
         }
@@ -19,6 +19,7 @@ class Send extends CI_Controller {
     }
 
     function index($tiny_url = '') {
+
         //date_default_timezone_set('Asia/Kolkata');
         //echo date('H:i:s');  exit;
         $data['tiny_url'] = $tiny_url;
@@ -26,7 +27,7 @@ class Send extends CI_Controller {
         $admin = $this->session->userdata();
         $user_id = $admin['user_id'];
         $user = $admin['logint_type'];
-        $data['get_msg_for'] = get_listt(SMS_FOR_LIST);
+        $data['get_msg_for'] = get_listt(SMS_FOR_LIST,$user);
         $data['get_api_status'] = $this->Data_model->get_api_status($user_id);
         $data['get_sms_template'] = get_list_by_user_id($user_id, SMS_TEMPLATE);
         if (isset($_POST['submit'])) {
@@ -145,9 +146,15 @@ class Send extends CI_Controller {
         $user = $admin['logint_type'];
         $field = 'user_id';
         //$data['get_student_list']=get_list_by_idd($user_id,$field,STUDENT);
-        $data['get_msg_for'] = get_listt(SMS_FOR_LIST);
+        $teacherdetail=get_teacher_list_by_user_id($user_id,CLASS_TEACHER);
+        $data['get_msg_for'] = get_listt(SMS_FOR_LIST,$user);
         $data['get_api_status'] = $this->Data_model->get_api_status($user_id);
+        if($user!='teacher') {
         $data['get_class_list'] = get_list_by_user_id($user_id, CLASSES);
+        } else {        
+        $data['get_class_list'] = get_total_class_list_by_user_id(explode(',',$teacherdetail['class_id']), CLASSES);
+        }
+        //$data['get_class_list'] = get_list_by_user_id($user_id, CLASSES);
         $data['get_sms_template'] = get_list_by_user_id($user_id, SMS_TEMPLATE);
         $data['page_title'] = 'SMS To Student';
 
@@ -553,8 +560,6 @@ class Send extends CI_Controller {
                         $s_data = $date[0] . "%20" . $date[1];
                         if ($get_user_list['status_one'] == 'Active') {
                             $link = $api_schedule_link . 'user=' . $api_username . '&pass=' . $api_password . '&sender=' . $api_sender . '&phone=' . $mobile_no . '&text=' . $message . '&priority=' . $api_priority . '&stype=' . $api_type . '&time=' . $s_data;
-
-
                             $upd['total_sms_one'] = $get_user_list['total_sms_one'] - $save['count_msg'];
                             $save['api_name'] = 'one';
                         }
@@ -685,7 +690,7 @@ class Send extends CI_Controller {
         //$data['mode']=ADMIN_URL.'/send/stud';
         $user_id = $admin['user_id'];
         $user = $admin['logint_type'];
-        $data['get_msg_for'] = get_listt(SMS_FOR_LIST);
+        $data['get_msg_for'] = get_listt(SMS_FOR_LIST,$user);
         $data['get_api_status'] = $this->Data_model->get_api_status($user_id);
         $data['get_teacher_list'] = get_list_by_user_id($user_id, CLASS_TEACHER);
         $data['get_sms_template'] = get_list_by_user_id($user_id, SMS_TEMPLATE);
@@ -820,7 +825,7 @@ class Send extends CI_Controller {
         //$data['mode']=ADMIN_URL.'/send/stud';
         $user_id = $admin['user_id'];
         $user = $admin['logint_type'];
-        $data['get_msg_for'] = get_listt(SMS_FOR_LIST);
+        $data['get_msg_for'] = get_listt(SMS_FOR_LIST,$user);
         $data['get_api_status'] = $this->Data_model->get_api_status($user_id);
         $data['get_staff_list'] = get_list_by_user_id($user_id, STAFF);
         $data['get_sms_template'] = get_list_by_user_id($user_id, SMS_TEMPLATE);
@@ -952,7 +957,7 @@ class Send extends CI_Controller {
         $admin = $this->session->userdata();
         $user_id = $admin['user_id'];
         $user = $admin['logint_type'];
-        $data['get_msg_for'] = get_listt(SMS_FOR_LIST);
+        $data['get_msg_for'] = get_listt(SMS_FOR_LIST,$user);
         $data['get_api_status'] = $this->Data_model->get_api_status($user_id);
         $data['get_sms_template'] = get_list_by_user_id($user_id, SMS_TEMPLATE);
         $data['get_group_list'] = get_list_by_user_id($user_id, GROUP);
@@ -1103,7 +1108,7 @@ class Send extends CI_Controller {
         $admin = $this->session->userdata();
         $user_id = $admin['user_id'];
         $user = $admin['logint_type'];
-        $data['get_msg_for'] = get_listt(SMS_FOR_LIST);
+        $data['get_msg_for'] = get_listt(SMS_FOR_LIST,$user);
         $data['get_api_status'] = $this->Data_model->get_api_status($user_id);
         $data['get_class_list'] = get_list_by_user_id($user_id, CLASSES);
         $data['get_home_template'] = get_list_by_user_id($user_id, HOMEWORK);
@@ -1114,6 +1119,7 @@ class Send extends CI_Controller {
             $s_message = trim($this->input->post('message', TRUE));
             $save['sms_type'] = $this->input->post('sms_type', TRUE);
             $save['msg_for'] = $this->input->post('msg_for', TRUE);
+            $language=$this->input->post('language', TRUE);            
             $save['user_id'] = $user_id;
             $save['send_sms_type'] = 'Homework';
 
@@ -1193,9 +1199,9 @@ class Send extends CI_Controller {
                 $save['sms_type'] = 'Instant';
             }
 
-            $mobile_number = $save['mobile_no'];
-
-            $mb_no = explode(",", $mobile_number);
+            $mobile_number = $save['mobile_no'];           
+            $mb_nos = explode(",", $mobile_number);
+            $mb_no=array_unique($mb_nos);
             //    $save['masterlog_id'] = $master_id;
             $date = get_current_date_time();
             $save['addtime'] = date("H:i:s", strtotime($date));
@@ -1248,15 +1254,21 @@ class Send extends CI_Controller {
                                     $numbers = $numbers;
                                     $sender = $sender;
                                     $data = array('user'=>$username, 'pass'=>$password, 'phone'=>$numbers, "sender"=>$sender, 'text'=>$save['message'],'priority'=>$api_priority,'stype'=>$api_type);
-                                    $send_report=send_sms_one($data,$save);                          
-                                    $active_one++;
+                                    $send_report=send_sms_one($data,$save); 
+                                    if(preg_match('/^\d{10}$/',$numbers)) {
                                     $save['response_id']=$send_report;                       
                                     $save['msg_status']='Pending';
                                     $save['is_send']=0;
-                        }
+                                    } else {                         
+                                    $j_error++;
+                                    $save['response_id']=$send_report;                       
+                                    $save['msg_status']='Pending';
+                                    $save['is_send']=0;
+                                }
+                        } else {
                         if ($get_user_list['status_two'] == 'Active') {                            
                             $save['api_name'] = 'two';                            
-                            $data = array('username' => $username, 'hash' => $hash, 'numbers' => $numbers, "sender" => $sender, "message" => $message_test, "unicode" => true);                            
+                            $data = array('username' => $username, 'hash' => $hash, 'numbers' => $numbers, "sender" => $sender, "message" => $message_test,'unicode'=>$language=='hindi'?1:0);                            
                         }
 						if($data!="") {
 						// Send sms
@@ -1272,13 +1284,14 @@ class Send extends CI_Controller {
 							}
 							
 						}
+                    }
                     } else {
                         if (isset($save['schedule_date'])) {
                             $dated = strtotime($save['schedule_date']);
                             if ($get_user_list['status_two'] == 'Active') {
                                 $save['api_name'] = 'two';                                
                                 $schedule_time = $dated;
-                                $data = array('username' => $username, 'hash' => $hash, 'numbers' => $numbers, "sender" => $sender, "message" => $message_test, "schedule_time" => $dated, "unicode" => true);                                
+                                $data = array('username' => $username, 'hash' => $hash, 'numbers' => $numbers, "sender" => $sender, "message" => $message_test, "schedule_time" => $dated,'unicode'=>$language=='hindi'?1:0);                                
                             }
 							if($data!=""){
 							// Send sms for scheduled 
@@ -1307,7 +1320,7 @@ class Send extends CI_Controller {
                 }
 				}
 				
-            if ($j_error == 0 || $active_one > 0) {
+            if ($j_error == 0) {
                 $this->session->set_flashdata('success', 'Message send succesfully');
                 redirect($this->config->item('admin_folder') . '/send/homework');
             } else {
@@ -1324,10 +1337,14 @@ class Send extends CI_Controller {
         $admin = $this->session->userdata();
         $user_id = $admin['user_id'];
         $user = $admin['logint_type'];
-        $data['get_msg_for'] = get_listt(SMS_FOR_LIST);
-        $data['get_api_status'] = $this->Data_model->get_api_status($user_id);
+        $data['get_msg_for'] = get_listt(SMS_FOR_LIST,$user);
+        $teacherdetail = get_teacher_list_by_user_id($user_id,CLASS_TEACHER);
+        $data['get_api_status'] = $this->Data_model->get_api_status($user_id);        
+        if($user!='teacher') {
         $data['get_class_list'] = $this->Data_model->get_classs_list($user_id);
-
+        } else {        
+        $data['get_class_list'] = get_total_class_list_by_user_id(explode(',',$teacherdetail['class_id']), CLASSES);
+        }
         //$data['get_class_list']=get_list_by_user_id($user_id,CLASSES);
         $data['get_sms_template'] = get_list_by_user_id($user_id, SMS_TEMPLATE);
         $data['page_title'] = 'SMS To Student';
@@ -1338,16 +1355,66 @@ class Send extends CI_Controller {
         if ($value == 'select') {
             redirect($this->config->item('admin_folder') . '/send/send-sms-to-student');
         }
-        if ($value == 'All') {
-            $field = 'user_id';
+        if($value == 'All') {           
             $data['class_value'] = 'All';
+            if($user!='teacher') {
+            $field = 'user_id';
             $data['get_student_list'] = get_list_by_idd($user_id, $field, STUDENT);
         } else {
+          $field = 'id';
+          $data['get_student_list'] = $this->Data_model->get_student_list_by_teacher_class_id(explode(',',$teacherdetail['class_id']));
+        }
+        } else {
+            if($value!="") {
             $class_name = get_list_by_id($value, CLASSES);
             $data['class_value'] = $class_name['name'];
+           if($user!='teacher'){
             $data['get_student_list'] = $this->Data_model->get_student_list_by_class_id($value, $user_id);
+           } else {
+           $data['get_student_list'] = $this->Data_model->get_student_list_by_teacher_class_id($value);
+           }
+       }
         }
         $this->load->view($this->config->item('admin_folder') . '/send/sms_student', $data);
+    }
+
+
+     function getclassgroup() {
+        $admin = $this->session->userdata();
+        $user_id = $admin['user_id'];
+        $user = $admin['logint_type'];
+        $data['get_msg_for'] = get_listt(SMS_FOR_LIST,$user);
+        $teacherdetail = get_teacher_list_by_user_id($user_id,CLASS_TEACHER);
+        $data['get_api_status'] = $this->Data_model->get_api_status($user_id);
+        $data['get_sms_template'] = get_list_by_user_id($user_id, SMS_TEMPLATE);        
+
+        //$data['get_class_list']=get_list_by_user_id($user_id,CLASSES);
+
+        $data['page_title'] = 'SMS To Class';
+
+        $value = $this->input->post('class_name', TRUE);
+        $data['class_group_id'] = $value;
+
+        if($value == 'All') {
+
+        if($user!='teacher') {          
+            $data['get_group_list']=get_list_by_user_id($user_id, CLASSES);
+        } else { 
+              
+          $data['get_group_list'] = get_list_by_teacher_class_id(explode(',',$teacherdetail['class_id']),CLASSES);
+        }
+             
+
+        }
+        else {
+            if($user!='teacher') {
+            $data['get_group_list']=get_class_list_by_user_id($user_id, $value, CLASSES);
+        } else {
+            $data['get_group_list']=get_class_list_by_teacher_class_id(explode(',',$teacherdetail['class_id']), $value, CLASSES);   
+        }
+                  
+        }
+        $this->load->view($this->config->item('admin_folder') . '/send/sms_class', $data);
     }
 
     function getwork() {
@@ -1381,11 +1448,16 @@ class Send extends CI_Controller {
         $data['page_title'] = 'SMS To Class';
         $admin = $this->session->userdata();
         $user_id = $admin['user_id'];
-        $user = $admin['logint_type'];
-        $data['get_msg_for'] = get_listt(SMS_FOR_LIST);
+        $user = $admin['logint_type'];       
+        $data['get_msg_for'] = get_listt(SMS_FOR_LIST,$user);
+        $teacherdetail = get_teacher_list_by_user_id($user_id,CLASS_TEACHER);
         $data['get_api_status'] = $this->Data_model->get_api_status($user_id);
         $data['get_sms_template'] = get_list_by_user_id($user_id, SMS_TEMPLATE);
+        if($user!='teacher') {
         $data['get_group_list'] = get_list_by_user_id($user_id, CLASSES);
+        } else {        
+        $data['get_group_list'] = get_total_class_list_by_user_id(explode(',',$teacherdetail['class_id']), CLASSES);
+        }
         $data['get_list'] = get_sms_list($user_id, 'class_sms');
         $data['total_msg'] = count($data['get_list']);
         if(isset($_POST['submit'])) {
@@ -1396,6 +1468,7 @@ class Send extends CI_Controller {
             $save['user_id'] = $user_id;
             $save['send_sms_type'] = 'class_sms';
             $check_group = $this->input->post('check_id', TRUE);
+            
             //print_r($check_group); exit;
             $path_link = '';
 
@@ -1416,7 +1489,12 @@ class Send extends CI_Controller {
             $save['addtime'] = date("H:i:s", strtotime($date));
             $save['adddate'] = date("Y-m-d", strtotime($date));
             foreach ($check_group as $key => $value) {
+                if($user!='teacher') {                 
                 $stdnt_list = $this->Data_model->get_student_list_by_class_id($value, $user_id);
+                } else {                 
+                $stdnt_list = $this->Data_model->get_student_list_by_teacher_class_id($value);
+                }
+                
                 foreach($stdnt_list as $gm) {
                     if($save['msg_for'] != 'None') {
                         $msg = $s_message;

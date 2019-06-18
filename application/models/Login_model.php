@@ -13,6 +13,7 @@ class Login_model extends CI_Model
                     $this->db->select('*');
                     $this->db->where('email',$admin_name);                   
                     $this->db->where('password',$password);
+                    $this->db->where('status','Active');
                     $result=$this->db->get(USERS); 
                     $result=$result->row_array();                   
                     if(sizeof($result) > 0)
@@ -24,7 +25,7 @@ class Login_model extends CI_Model
                                 $admin['admin_id']=$result['id'];
                                 $admin['user_id']="";
                             } else  {
-                                $admin['logint_type']='user';
+                                $admin['logint_type']=$result['logint_type'];
                                 $admin['user_id']=$result['id'];
                                 $admin['admin_id']="";
                             }

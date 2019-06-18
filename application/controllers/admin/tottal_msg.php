@@ -16,7 +16,6 @@ class Tottal_msg extends CI_Controller {
     function index() {
 
         $admin = $this->session->userdata();
-
         if ($admin['user_id'] != "") {
             $user_id = $admin['user_id'];
         } else {

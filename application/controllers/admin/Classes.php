@@ -24,18 +24,57 @@ class Classes extends CI_Controller {
                 $user=$admin['logint_type'];
                 $field='user_id';
                 $data['data']=get_list_by_idd($user_id,$field,CLASSES);
-				
-                /*if($logint_type=='user')
-                {
-                    $id=$admin['user_id'];
-                    $field='user_id';
-                    $data['data']=get_list_by_idd($id,$field,CLASSES);
-                } else {
-                    $data['data']=get_list(CLASSES);
-                }*/
-                
                 $data['page_title']= 'Manage Class';
                 $this->load->view($this->config->item('admin_folder').'/classes_list', $data);
+        }
+
+        function assign()
+        {   
+                $admin=$this->session->userdata();
+                $user_id=$admin['user_id'];
+                $user=$admin['logint_type'];
+                $field='user_id';
+                $data['teacher']=get_teacher_list_by_idd($user_id,$field,CLASS_TEACHER);
+                $data['get_group_list'] = get_list_by_user_id($user_id, CLASSES);                
+                $data['page_title']= 'Assign Class To Teacher';
+                $this->load->view($this->config->item('admin_folder').'/classes_assign', $data);
+        }
+
+        function assign_class() {
+          if(isset($_REQUEST['submit'])){
+            $class_id=$this->input->post('check_id',true);
+            if(!empty($class_id)) {
+            $teacher_id=$this->input->post('teacher',true);
+            $k=0;
+            $j=0;
+            foreach($class_id as $key=>$class) {                              
+                $teacherdetail=get_property_info('id',$teacher_id,CLASS_TEACHER);
+                $value=explode(',',$teacherdetail['class_id']);
+                if(!in_array($class, $value)) {
+                $data['class_id']="";
+                if($teacherdetail['class_id']=="") {
+                  $data['class_id']=$class;
+                } else {
+                  $data['class_id'].=$teacherdetail['class_id'].",".$class;
+                }               
+                $updateuser=update_table_record($data,$teacher_id,CLASS_TEACHER);                                
+                } else {
+                 $j++;
+                }
+                $k++;                           
+            }
+             if($j>0) {
+                 $this->session->set_flashdata('error', ''.$j.' Assign class to teacher had error while assign class to teacher is '.$k.'!!'); 
+            } else {
+                    $this->session->set_flashdata('success', 'You have successfully Assigned class to teacher.');
+            }
+            } else {
+               
+               $this->session->set_flashdata('error', 'Please select class');  
+            }  
+                 
+          } 
+           redirect($this->config->item('admin_folder').'/classes/assign'); 
         }
         
         function mode($id='')
@@ -68,6 +107,7 @@ class Classes extends CI_Controller {
                     if(isset($_REQUEST['submit']))
                     {
                         $save['name']=$this->input->post('name',TRUE);
+                        $save['class_group_id']=$this->input->post('class_group',TRUE);
                         
                         $save['status']=$this->input->post('status',TRUE);
                         
@@ -167,6 +207,7 @@ class Classes extends CI_Controller {
                                         'name'=>$row['name'],
                                         'class_teacher'=>$row['class_teacher'],
                                         'user_id'=>$user_id,
+                                        'class_group_id'=>$row['class_group_id'],
                                         'status'=>'Active',
                                     );
                                     $add=insert_record(CLASSES,$insert_data); 
@@ -205,6 +246,29 @@ class Classes extends CI_Controller {
             }
 
         }
+
+        function getclassgroup() {
+        $admin = $this->session->userdata();
+        $user_id = $admin['user_id'];
+        $user = $admin['logint_type'];
+        $field='user_id';     
+        $data['teacher']=get_teacher_list_by_idd($user_id,$field,CLASS_TEACHER);
+        //$data['get_class_list']=get_list_by_user_id($user_id,CLASSES);
+        $data['page_title'] = 'Assign Class To Teacher';
+      
+        $value = $this->input->post('class_name', TRUE);
+        $data['class_group_id'] = $value;
+
+        if($value == 'All') {
+             $data['get_group_list']=get_list_by_user_id($user_id, CLASSES);
+
+        }
+        else {
+            $data['get_group_list']=get_class_list_by_user_id($user_id, $value, CLASSES);                  
+        }
+       
+        $this->load->view($this->config->item('admin_folder').'/classes_assign', $data);
+    }
         
 }
 ?>

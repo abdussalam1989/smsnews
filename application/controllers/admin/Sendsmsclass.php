@@ -22,21 +22,31 @@ class Sendsmsclass extends CI_Controller {
                 $data['page_title']='SMS To Class';
                 $admin=$this->session->userdata();
                 $user_id=$admin['user_id'];
-                $user=$admin['logint_type'];
-              
-                $data['get_sms_template']=get_list_by_user_id($user_id,SMS_TEMPLATE);
-           
+                $user=$admin['logint_type'];              
+                $data['get_sms_template']=get_list_by_user_id($user_id,SMS_TEMPLATE);           
                     if(isset($_POST['submit']))
                     {
                         //$save['mobile_no']=$this->input->post('mobile_no',TRUE);
                         $s_message=$this->input->post('message',TRUE);
 						$save['sms_type']=$this->input->post('sms_type',TRUE);
                         $save['msg_for']=$this->input->post('msg_for',TRUE);
-                        $save['user_id']=$user_id;
+                        $language = $this->input->post('language', TRUE);
+                        if($user!='teacher') {
+                        $save['user_id'] = $user_id;
+                        } else {
+                        $teacherdetail=get_teacher_list_by_user_id($user_id,CLASS_TEACHER);
+                        $save['user_id'] = $teacherdetail['user_id'];
+                        $save['teacher_id'] = $teacherdetail['login_id'];  
+                        }
                         $save['send_sms_type']='class_sms';
                         $check_group=$this->input->post('check_id',TRUE);                       
                         $path_link='';                     
-                        $get_user_list=get_list_by_id($user_id, USERS);                      				
+                        if($user!='teacher') {
+                        $get_user_list = get_list_by_id($user_id, USERS);
+                        } else {
+                        $teacherdetail=get_teacher_list_by_user_id($user_id,CLASS_TEACHER);
+                        $get_user_list = get_list_by_id($teacherdetail['user_id'], USERS);
+                        }                      				
 					    if($get_user_list['status_one']=='Active') {
                             $api_username=$get_user_list['username_one'];
                             $api_password=$get_user_list['password_one'];
@@ -118,9 +128,16 @@ class Sendsmsclass extends CI_Controller {
                                 $save['addtime']=date("H:i:s",strtotime($date));
                                 $save['adddate']=date("Y-m-d",strtotime($date));
                                // foreach($check_group as $key=>$value) {
-                                        $stdnt_list=$this->Data_model->get_student_list_by_class_id($check_group,$user_id);
+                                if($user!='teacher') {                 
+                                $stdnt_lists=$this->Data_model->get_student_list_by_class_id($check_group,$user_id);
+                                } else {                 
+                                $stdnt_lists = $this->Data_model->get_student_list_by_teacher_class_id($check_group);
+                                }
+                                        
 										//$numbers = implode(",",array_column($stdnt_list,'mobile_no'));
+                                        $stdnt_list=$this->unique_multi_array($stdnt_lists,'mobile_no');
                                         $active_one=0;
+                                        $count=0;
 										foreach($stdnt_list as $key=>$gm)
                                         {  		
                                             if($save['msg_for']!='None'){    
@@ -169,14 +186,23 @@ class Sendsmsclass extends CI_Controller {
                                                             $sender = $api_sender;
 
                                                             $data_one = array('user'=>$username, 'pass'=>$password, 'phone'=>$numbers, "sender"=>$sender, 'text'=>$save['message'],'priority'=>$api_priority,'stype'=>$api_type);
-                                                                $send_report=send_sms_one($data_one,$save);    
-                                                                $active_one++; 
+                                                                $send_report=send_sms_one($data_one,$save);
+                                                                if(preg_match('/^\d{10}$/',$numbers)) {
                                                                 $save['response_id']=$send_report;
                                                                 $save['msg_status']='Pending';
                                                                 $save['is_send']=0;
-                                                                $store_data[$key]= $save;         
+                                                                $store_data[$key]= $save; 
+                                                                } else {
+                                                                $active_one++; 
+                                                                echo  
+                                                                $save['response_id']=$send_report;
+                                                                $save['msg_status']='Pending';
+                                                                $save['is_send']=0;
+                                                               
+                                                                $store_data[$key]= $save;
+                                                                }        
                                                             
-                                                }
+                                                } else {
                                                 if($get_user_list['status_two']=='Active') {    
                                                             $save['api_name']='two';  
                                                             $username =$api_username;
@@ -184,26 +210,21 @@ class Sendsmsclass extends CI_Controller {
 															$numbers = $number;
 															$sender = $api_sender;
 															$message = $message;
-															$data = array('username' => $username, 'hash' =>$hash, 'numbers' => $numbers, "sender" => $sender, "message" => $message);
-															 		
-															$ch = curl_init('http://smartsms.clickschooldiary.com/api2/send/');
-															curl_setopt($ch, CURLOPT_POST, true);
-															curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-															curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);														
-															$send_report = curl_exec($ch);
+															$data = array('username' => $username, 'hash' =>$hash, 'numbers' => $numbers, "sender" => $sender, "message" => $message,'unicode'=>$language=='hindi'?1:0);
+															$json = send_sms($data, $save); 		
 															
-															curl_close($ch);     
-															$json = json_decode($send_report, true);		
 													    if($json['status']=='success')
 														{
 								                            $store_data[$key]['msg_status']='Delivered';
 								                            $store_data[$key]['is_send']=1;											  
-														} else {											
+														} else {											$active_one++;
+                                                            
 																$save['msg_status']='failure';
 																$save['is_send']=0;			
 														}                                                       
                                                       
                                                 }
+                                            }
                                             } else { 
                                                     if(isset($save['schedule_date'])) {
 														
@@ -225,33 +246,25 @@ class Sendsmsclass extends CI_Controller {
 															$sender = $api_sender;
 															$message = $message;
 															$schedule_time=$dated;
-															$data = array('username' => $username, 'hash' => $hash, 'numbers' => $numbers, "sender" => $sender, "message" => $message, "schedule_time" => $dated);
-															$ch = curl_init('http://smartsms.clickschooldiary.com/api2/send/');
-															curl_setopt($ch, CURLOPT_POST, true);
-															curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-															curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-															$send_report = curl_exec($ch);
-															curl_close($ch);     
-															$json = json_decode($send_report, true);
-
-													   
-                                                        $save['api_name']='two';
-														if($json['status']=='success')
+															$data1 = array('username' => $username, 'hash' => $hash, 'numbers' => $numbers, "sender" => $sender, "message" => $message, "schedule_time" => $dated,'unicode'=>$language=='hindi'?1:0);
+														  $json = send_sms($data1, $save);
+                                                          $save['api_name']='two';
+														 if($json['status']=='success')
 														{
 								                              $store_data[$key]['msg_status']='Scheduled';
 								                              $store_data[$key]['is_send']=2;						  
 														}
 														else 
-														{																
+														{		$active_one++;			
 																$store_data[$key]['msg_status']='failure';
 																$store_data[$key]['is_send']=0;
 																
-															}
+														}
 															
 														}																		
-													        }
+													}
 												}
-
+                                              $count++;  
                                         //==============================================================================//
 
 												$store_data[$key]=$save;
@@ -268,8 +281,8 @@ class Sendsmsclass extends CI_Controller {
                                           
                               //  }
                            
-                                if($json['status']=='failure'){
-                                      $this->session->set_flashdata('error', 'Error while Sending sms !!' );
+                                if($json['status']=='failure' || $active_one>0) {
+                                      $this->session->set_flashdata('error', $active_one.' Mobile numbers had error while sending sms from '.$count.' numbers!!');
                                       redirect($this->config->item('admin_folder').'/send/class_sms');
                                 } 
 								else {
@@ -280,6 +293,21 @@ class Sendsmsclass extends CI_Controller {
                     }
 		$this->load->view($this->config->item('admin_folder').'/sendsms_class', $data);
         }
-        
-		}
+
+
+        function unique_multi_array($array, $key) { 
+        $temp_array = array(); 
+        $i = 0; 
+        $key_array = array(); 
+  
+       foreach($array as $val) { 
+       if (!in_array($val[$key], $key_array)) { 
+          $key_array[$i] = $val[$key]; 
+          $temp_array[$i] = $val; 
+       } 
+       $i++; 
+       } 
+       return $temp_array; 
+       }
+        }
 		?>
